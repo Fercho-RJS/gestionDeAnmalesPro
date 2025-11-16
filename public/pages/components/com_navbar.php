@@ -61,7 +61,7 @@ $pg_actual = $_SESSION['pgActual'];
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_animalesPerdidos.php"><i class="bi bi-search"></i> Pérdidas</a></li>
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_animalesEnAdopcion.php"><i class="bi bi-heart-fill"></i> Adopciones</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-bag"></i> Tienda</a></li>
+            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_tienda.php"><i class="bi bi-bag"></i> Tienda</a></li>
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -104,7 +104,7 @@ $pg_actual = $_SESSION['pgActual'];
               <i class="bi bi-shield-plus"></i> Registros
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>mascotas/pg_asignarVacunacion.php"><i class="bi bi-capsule-pill"></i> Asignar vacunación</a></li>
+              <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>workspace/veterinario/forms/newMascotaVacunaType.php"><i class="bi bi-capsule-pill"></i> Asignar vacunación</a></li>
               <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>mascotas/pg_definirTratamiento.php"><i class="bi bi-clipboard-check"></i> Definir tratamiento</a></li>
               <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>mascotas/pg_controlCrecimiento.php"><i class="bi bi-graph-up"></i> Control de crecimiento</a></li>
               <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>mascotas/pg_historialMascota.php"><i class="bi bi-journal-text"></i> Historial de la mascota</a></li>

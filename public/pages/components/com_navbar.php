@@ -60,7 +60,7 @@ $pg_actual = $_SESSION['pgActual'];
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_animalesPerdidos.php"><i class="bi bi-search"></i> Pérdidas</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-heart-fill"></i> Adopciones</a></li>
+            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_animalesEnAdopcion.php"><i class="bi bi-heart-fill"></i> Adopciones</a></li>
             <li><a class="dropdown-item" href="#"><i class="bi bi-bag"></i> Tienda</a></li>
             <li>
               <hr class="dropdown-divider">
@@ -75,7 +75,7 @@ $pg_actual = $_SESSION['pgActual'];
             <i class="bi bi-tools"></i> Autogestión
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>workspace/pg_vacunasMascota.php"><i class="bi bi-capsule"></i> Vacunas de mi mascota</a></li>
+            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_vacunasMascota.php"><i class="bi bi-capsule"></i> Vacunas de mi mascota</a></li>
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_turnosVeterinario.php"><i class="bi bi-calendar-check"></i> Sacar turno al veterinario</a></li>
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_historialMedico.php"><i class="bi bi-file-medical"></i> Historial médico</a></li>
             <li>

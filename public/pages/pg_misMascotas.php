@@ -35,7 +35,7 @@ $_SESSION['pgActual'] = "misMascotas";
           <a id="new_mascota"
             <?php echo ($_SESSION['rol'] == 'Invitado')
               ? 'href=""'
-              : 'href="' . PUBLIC_PAGES_URL . 'workspace/animals/form_new_animal.php"'; ?>
+              : 'href="' . PUBLIC_PAGES_URL . 'workspace/animals/forms/newMascotaType.php"'; ?>
             class="btn btn-sm rounded-pill btn-success px-3">Registrar</a>
         </div>
       </div>

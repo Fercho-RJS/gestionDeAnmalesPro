@@ -75,7 +75,7 @@ $result = $conexion->query($sql);
               </td>
               <td>
                 <!-- Botón habilitar/deshabilitar -->
-                <form action="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/action/usuario/admin_toggleUsuario.php" method="post" class="d-inline">
+                <form action="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/usuario/admin_toggleUsuario.php" method="post" class="d-inline">
                   <input type="hidden" name="idUsuario" value="<?php echo $row['idUsuario']; ?>">
                   <input type="hidden" name="habilitado" value="<?php echo $row['habilitado'] == 1 ? 0 : 1; ?>">
                   <button type="submit" class="btn btn-sm <?php echo $row['habilitado'] == 1 ? 'btn-danger' : 'btn-success'; ?>">

@@ -1,0 +1,14 @@
+.navbar-nav .nav-item:last-child a{
+  color: rgb(148, 148, 148) !important;
+  border: solid 1px !important;
+  font-weight: 400 !important;
+  border-radius: 10px !important;
+  margin-left: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.nav-link:hover {
+  border-bottom: solid 1px !important;
+  
+}

@@ -1,0 +1,8 @@
+.support-align {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+.text-justify {
+  text-align: justify !important;
+}

@@ -1,0 +1,49 @@
+/* Contenedor general */
+#contenedor-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+/* Formulario */
+#form-login {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Contenido del formulario */
+#form-login-contenido {
+  border: 1px solid #e9e9e9;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+/* Imagen */
+#form-login-contenido img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive para pantallas pequeñas */
+@media screen and (max-width: 600px) {
+  #form-login-contenido {
+    padding: 15px;
+  }
+
+  .input-group-text {
+    font-size: 14px;
+  }
+
+  .form-control {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

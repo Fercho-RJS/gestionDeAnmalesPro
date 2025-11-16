@@ -1,0 +1,108 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php';
+require_once PUBLIC_PHP_FUNCTIONS . 'conectar-bdd.php';
+
+session_start();
+
+// Solo administradores pueden acceder
+if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'Administrador') {
+  header("Location: " . PUBLIC_PAGES_URL . "pg_login.php?m=403");
+  exit("Acceso denegado.");
+}
+
+$_SESSION['pgActual'] = "admin_listarUsuarios";
+
+// Leer usuarios de la BD
+$sql = "SELECT u.idUsuario, u.rol, u.habilitado,
+               p.nombre, p.apellido, p.email, p.dni
+        FROM usuario u
+        INNER JOIN persona p ON p.idPersona = u.Persona_idPersona
+        ORDER BY p.apellido ASC, p.nombre ASC";
+
+$result = $conexion->query($sql);
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunidad - Listado de Usuarios</title>
+
+  <?php require PUBLIC_PAGES_COMPONENTS . 'link-styles.php'; ?>
+  <link rel="stylesheet" href="<?php echo PUBLIC_STYLES_URL; ?>custom-navbar.css">
+  <link rel="stylesheet" href="<?php echo PUBLIC_STYLES_URL; ?>custom-support.css">
+</head>
+
+<body>
+  <section id="ContenedorGeneral">
+    <?php
+    require PUBLIC_PAGES_COMPONENTS . 'adm_navbar.php';
+    ?>
+
+    <div class="container my-4">
+      <h1 class="mb-4">Listado de usuarios</h1>
+
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>DNI</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while ($row = $result->fetch_assoc()): ?>
+            <tr>
+              <td><?php echo $row['idUsuario']; ?></td>
+              <td><?php echo htmlspecialchars($row['nombre']); ?></td>
+              <td><?php echo htmlspecialchars($row['apellido']); ?></td>
+              <td><?php echo htmlspecialchars($row['email']); ?></td>
+              <td><?php echo htmlspecialchars($row['dni']); ?></td>
+              <td><?php echo $row['rol']; ?></td>
+              <td>
+                <?php if ($row['habilitado'] == 1): ?>
+                  <span class="badge bg-success">Habilitado</span>
+                <?php else: ?>
+                  <span class="badge bg-danger">Deshabilitado</span>
+                <?php endif; ?>
+              </td>
+              <td>
+                <!-- Botón habilitar/deshabilitar -->
+                <form action="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/action/usuario/admin_toggleUsuario.php" method="post" class="d-inline">
+                  <input type="hidden" name="idUsuario" value="<?php echo $row['idUsuario']; ?>">
+                  <input type="hidden" name="habilitado" value="<?php echo $row['habilitado'] == 1 ? 0 : 1; ?>">
+                  <button type="submit" class="btn btn-sm <?php echo $row['habilitado'] == 1 ? 'btn-danger' : 'btn-success'; ?>">
+                    <?php echo $row['habilitado'] == 1 ? 'Deshabilitar' : 'Habilitar'; ?>
+                  </button>
+                </form>
+
+                <!-- Botón editar -->
+                <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/editarUsuario.php?id=<?php echo $row['idUsuario']; ?>" class="btn btn-sm btn-primary">Editar</a>
+
+                <!-- Botón eliminar -->
+                <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>admin_eliminar_usuario.php" method="post" class="d-inline" onsubmit="return confirm('¿Seguro que desea eliminar este usuario?');">
+                  <input type="hidden" name="idUsuario" value="<?php echo $row['idUsuario']; ?>">
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                </form>
+              </td>
+
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
+  <?php require PUBLIC_PAGES_COMPONENTS . 'footer.php'; ?>
+  <?php require PUBLIC_PAGES_COMPONENTS . 'support.php'; ?>
+</body>
+
+</html>

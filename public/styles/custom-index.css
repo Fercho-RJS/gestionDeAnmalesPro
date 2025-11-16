@@ -1,0 +1,24 @@
+/* Fondo animado */
+.bg-cover {
+  position: fixed;
+  inset: 0; /* equivale a top:0; right:0; bottom:0; left:0 */
+  background: url("../res/gif/3780cf3893cb952e27e66345bc6074b0.gif") center / cover no-repeat;
+  z-index: 0;
+  pointer-events: none; /* no bloquea clics */
+  opacity: 0.1;
+}
+
+/* Overlay semitransparente para mejorar legibilidad */
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.25); /* ajusta la opacidad del overlay */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Contenido principal por encima */
+.page-content {
+  position: relative;
+  z-index: 2;
+}

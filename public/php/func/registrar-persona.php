@@ -104,6 +104,9 @@ if (!$insertUsuario->execute()) {
   exit("Error al registrar usuario: " . $insertUsuario->error);
 }
 
+require_once PUBLIC_PHP_FUNCTIONS . 'log.php';
+registrarLog("Se ha registrado un nuevo usuario.");
+
 // Registro exitoso
 header("Location: " . PUBLIC_PAGES_URL . "pg_register.php?m=201");
 exit;

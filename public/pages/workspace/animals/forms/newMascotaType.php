@@ -1,117 +1,66 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php';
 session_start();
-// Bloquear acceso a invitados
-if (!isset($_SESSION['rol']) || $_SESSION['rol'] === 'Invitado') {
-  // Redirigir al login o mostrar mensaje
-  header("Location: " . PUBLIC_PAGES_URL . "pg_login.php?m=acceso_invitado");
-  exit("Acceso denegado para invitados.");
+require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php';
+require_once PUBLIC_PHP_FUNCTIONS . 'conectar-bdd.php';
+
+$nombre = $_POST['nombre'] ?? null;
+$tipo = $_POST['tipo'] ?? null;
+$colorList = $_POST['colorList'] ?? null;
+$fechaNacimiento = $_POST['fechaNacimiento'] ?? null;
+$raza = $_POST['raza'] ?? null;
+$imagenUrl = $_FILES['imagenUrl'] ?? null;
+$fechaAdopcion = $_POST['fechaAdopcion'] ?? null;
+$tamanio = $_POST['tamanio'] ?? null;
+$codigoAnimal = 1;
+
+// Validación de campos obligatorios
+if (empty($nombre) || empty($fechaNacimiento) || empty($raza) || empty($tipo) || empty($colorList) || empty($tamanio)) {
+  header("Location: " . PUBLIC_PAGES_URL . "workspace/animals/form_new_animal.php?error=missing_fields");
+  exit;
+} else if (!empty($codigoAnimal)) {
+  // Generar código único de chip
+  do {
+    $codigoAnimal = bin2hex(random_bytes(5));
+    $validarCodigo = "SELECT chipNro FROM mascota WHERE chipNro = '$codigoAnimal'";
+    $resultado = mysqli_query($conexion, $validarCodigo);
+    $row = mysqli_fetch_assoc($resultado);
+  } while ($row);
 }
-?>
-$_SESSION['pgActual'] = "misMascotas";
-?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar Mascota</title>
 
-  <?php require PUBLIC_PAGES_COMPONENTS . 'link-styles.php'; ?>
+$edad = (int)date("Y") - (int)date("Y", strtotime($fechaNacimiento));
+$propietario = $_SESSION['idUsuario'] ?? null;
 
-  <link rel="stylesheet" href="<?php echo PUBLIC_STYLES_URL; ?>custom-navbar.css">
-  <link rel="stylesheet" href="<?php echo PUBLIC_STYLES_URL; ?>custom-support.css">
-</head>
+if (empty($fechaAdopcion)) {
+  $fechaAdopcion = null;
+}
 
-<body>
-<section id="ContenedorGeneral">
-  <?php
-  require PUBLIC_PAGES_COMPONENTS . 'marquee.php';
-  require PUBLIC_PAGES_COMPONENTS . 'com_navbar.php';
-  ?>
+// Imagen por defecto
+$rutaBD = PUBLIC_RESOURCES_IMAGES_URL . "animal.png";
 
-  <section class="m-5">
-    <div class="row">
-      <div class="col-6">
-        <p>Registrar una mascota para <b><?php echo strtoupper($_SESSION['user']); ?></b></p>
-      </div>
-      <form action="<?php echo PUBLIC_PAGES_URL; ?>workspace/animals/action/registrar-nueva-mascota.php" method="post" enctype="multipart/form-data">
-        <div class="text-end">
-          <button type="submit" class="btn btn-success rounded-circle"><i class="bi bi-plus-circle"></i></button>
-          <button type="reset" class="btn btn-secondary rounded-circle"><i class="bi bi-arrow-clockwise"></i></button>
-        </div>
-        <hr>
-        <div class="col-12 text-center">
-          <?php if (isset($_GET['error']) && $_GET['error'] === 'missing_fields'): ?>
-            <div class="alert alert-danger" role="alert">
-              Por favor, complete todos los campos obligatorios.
-            </div>
-          <?php endif; ?>
-        </div>
-
-        <div class="row mt-5 mt-xl-4">
-          <div class="col-xl-2 col-12 text-center">
-            <img id="previewImagen" src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>animal.png" alt="" class="img-fluid rounded-4" style="max-height: 220px;">
-          </div>
-
-          <div class="col-xl-5 col-12 mt-3 mt-xl-0">
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Nombre</span>
-              <input id="nombre" name="nombre" type="text" class="form-control border-0 border-bottom" placeholder="(Ingresar)">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Raza</span>
-              <input type="text" id="raza" name="raza" class="form-control border-0 border-bottom" placeholder="(Ingresar)">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Fecha de nacimiento</span>
-              <input type="date" id="fechaNacimiento" name="fechaNacimiento" class="form-control border-0 border-bottom">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Imagen</span>
-              <input type="file" id="imagenUrl" name="imagenUrl" class="form-control border-0 border-bottom" accept="image/*" onchange="mostrarVistaPrevia(event)">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Fecha de Adopción</span>
-              <input type="date" id="fechaAdopcion" name="fechaAdopcion" class="form-control border-0 border-bottom">
-            </div>
-          </div>
-
-          <div class="col-xl-5 col-12 mt-2 mt-xl-0">
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Tipo</span>
-              <input type="text" id="tipo" name="tipo" class="form-control border-0 border-bottom" placeholder="(Ingresar)">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Color/es</span>
-              <input type="text" id="colorList" name="colorList" class="form-control border-0 border-bottom" placeholder="(Ingresar)">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">Tamaño</span>
-              <input type="text" id="tamanio" name="tamanio" class="form-control border-0 border-bottom" placeholder="(Ingresar)">
-            </div>
-            <div class="input-group input-group-sm mb-3">
-              <span class="input-group-text bg-transparent border-0 border-bottom">CID</span>
-              <input type="text" id="codigoAnimal" name="codigoAnimal" class="form-control border-0 border-bottom" placeholder="(Ingresar)">
-            </div>
-            <div class="d-flex justify-content-between">
-              <button type="submit" class="btn btn-success w-100">Agregar Animal</button>
-              <button type="reset" class="btn btn-secondary ms-2">Reiniciar</button>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-  </section>
-
-  <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
-  <?php
-  if ($_SESSION['rol'] == 'Usuario' || $_SESSION['rol'] == 'Invitado') {
-    require PUBLIC_PAGES_COMPONENTS . 'prohibir_inspeccionar_elemento.php';
+// Si se sube una imagen personalizada
+if (isset($_FILES['imagenUrl']) && $_FILES['imagenUrl']['error'] === UPLOAD_ERR_OK) {
+  $directorio = $_SERVER['DOCUMENT_ROOT'] . PUBLIC_RESOURCES_ANIMAL_PROFILES_URL;
+  if (!is_dir($directorio)) {
+    mkdir($directorio, 0777, true);
   }
-  require PUBLIC_PAGES_COMPONENTS . 'footer.php';
-  require PUBLIC_PAGES_COMPONENTS . 'support.php';
-  ?>
-</section>
-</body>
-</html>
+  $nombreArchivo = 'photo-' . time() . '-' . basename($_FILES['imagenUrl']['name']);
+  $rutaCompleta = $directorio . $nombreArchivo;
+
+  if (move_uploaded_file($_FILES['imagenUrl']['tmp_name'], $rutaCompleta)) {
+    $rutaBD = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . $nombreArchivo;
+  }
+}
+
+// Insertar mascota
+$sql = "INSERT INTO mascota (nombre, categoria, raza, edad, color, height, imagen, chipNro, status, Usuario_idUsuario) 
+        VALUES ('$nombre', '$tipo', '$raza', '$edad', '$colorList', '$tamanio', '$rutaBD', '$codigoAnimal', 'Adoptado', '$propietario')";
+$result = mysqli_query($conexion, $sql);
+
+if ($result) {
+  header("Location: " . PUBLIC_PAGES_URL . "pg_misMascotas.php?m=mascota_registrada");
+  exit;
+} else {
+  echo "Error al registrar la mascota: " . mysqli_error($conexion);
+}
+
+mysqli_close($conexion);

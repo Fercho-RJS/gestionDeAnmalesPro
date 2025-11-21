@@ -5,13 +5,13 @@ if (!session_id()) {
 }
 $_SESSION['pgActual'] = "vacunas";
 
-if (!isset($_SESSION['idPersona']) || $_SESSION['rol'] === 'Invitado') {
+if (!isset($_SESSION['idUsuario']) || $_SESSION['rol'] === 'Invitado') {
   header('location:' . PUBLIC_PAGES_URL . 'pg_login.php');
   exit();
 }
 
 require_once PUBLIC_PHP_FUNCTIONS . 'conectar-bdd.php';
-$idUsuario = $_SESSION['idPersona'];
+$idUsuario = $_SESSION['idUsuario'];
 
 // Consulta mascotas del usuario
 $sqlMascotas = "SELECT * FROM mascota WHERE Usuario_idUsuario = ?";
@@ -53,9 +53,9 @@ $resultMascotas = $stmtMascotas->get_result();
                   $sqlVacunas = "
                     SELECT vm.*, v.nombre AS vacuna_nombre, v.fabricante, v.dosis_requeridas, v.intervalo_dias
                     FROM vacunas_mascota vm
-                    JOIN vacunas v ON vm.Vacunas_idVacunas = v.idVacunas
+                    JOIN vacunas v ON vm.Vacunas_idVacunas = v.idvacunas
                     WHERE vm.Mascota_idMascota = ?
-                    ORDER BY vm.fecha_elaboracion DESC
+                    ORDER BY vm.fecha_colocacion DESC
                   ";
                   $stmtVacunas = $conexion->prepare($sqlVacunas);
                   if (!$stmtVacunas) {
@@ -74,9 +74,12 @@ $resultMascotas = $stmtMascotas->get_result();
                         <li class="list-group-item">
                           <strong><?php echo htmlspecialchars($vacuna['vacuna_nombre']); ?></strong><br>
                           <small>
+                            Fabricante: <?php echo htmlspecialchars($vacuna['fabricante']); ?><br>
+                            Dosis requeridas: <?php echo htmlspecialchars($vacuna['dosis_requeridas']); ?><br>
+                            Intervalo entre dosis: <?php echo $vacuna['intervalo_dias'] ? $vacuna['intervalo_dias'] . ' días' : 'No aplica'; ?><br>
                             Aplicada por: <?php echo htmlspecialchars($vacuna['veterinario']); ?><br>
                             Serie: <?php echo htmlspecialchars($vacuna['numero_serie']); ?><br>
-                            Fecha de elaboración: <?php echo date("d/m/Y", strtotime($vacuna['fecha_elaboracion'])); ?><br>
+                            Fecha de colocación: <?php echo date("d/m/Y", strtotime($vacuna['fecha_colocacion'])); ?><br>
                             Fecha de caducidad: <?php echo date("d/m/Y", strtotime($vacuna['fecha_caducidad'])); ?><br>
                             Próxima dosis: <?php echo $vacuna['proxima_dosis'] ? date("d/m/Y", strtotime($vacuna['proxima_dosis'])) : 'No programada'; ?>
                           </small>

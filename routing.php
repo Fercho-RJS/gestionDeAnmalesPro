@@ -5,12 +5,12 @@
 
 // Ruta física en el servidor (para require/include)
 if (!defined('BASE_PATH')) {
-  define('BASE_PATH', $_SERVER['DOCUMENT_ROOT']);
+    define('BASE_PATH', $_SERVER['DOCUMENT_ROOT']);
 }
 
 // Ruta pública (para enlaces en HTML)
 if (!defined('BASE_URL')) {
-  define('BASE_URL', ''); // porque todo está en htdocs raíz
+    define('BASE_URL', ''); // porque todo está en htdocs raíz
 }
 
 // Carpetas públicas

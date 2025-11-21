@@ -1,11 +1,16 @@
 <?php
+// Mostrar errores en desarrollo
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php';
 require_once PUBLIC_PHP_FUNCTIONS . 'conectar-bdd.php';
-session_start();
+require_once PUBLIC_PHP_FUNCTIONS . 'logging.php';
+
+if (!session_id()) {
+    session_start();
+}
 
 // Usuario invitado fijo
 $email = "guest@invitado.com";
@@ -80,6 +85,9 @@ if ($stmt->num_rows === 0) {
 }
 
 $_SESSION['pgActual'] = "inicio";
+
+// Registrar log DESPUÉS de tener sesión y conexión
+registrarLog("Ha iniciado sesión como invitado (usuario ID: " . ($_SESSION['idUsuario'] ?? 'N/A') . ")");
 
 // Redirigir al workspace principal
 header("Location: " . PUBLIC_PAGES_URL . "pg_main_workspace.php");

@@ -70,7 +70,7 @@ $_SESSION['pgActual'] = "misMascotas";
                 <div class="col-12 col-sm-auto text-center mb-3 mb-sm-0">
                   <img class="img-fluid rounded-4"
                     style="height: 220px; object-fit: cover; width: 220px; max-width: 100%;"
-                    src="<?php echo htmlspecialchars($mascota['imagen']); ?>"
+                    src="<?php echo $mascota['imagen']; ?>"
                     alt="Imagen de mascota">
                 </div>
                 <div class="col-12 col-sm d-flex">

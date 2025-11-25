@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php';
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 $_SESSION['pgActual'] = "animalesPerdidos";
 ?>
 <!DOCTYPE html>
@@ -74,7 +76,12 @@ $_SESSION['pgActual'] = "animalesPerdidos";
         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
           <?php while ($mascota = $resultado->fetch_assoc()): ?>
             <?php
-            $imagen      = htmlspecialchars($mascota['imagen'] ?? '', ENT_QUOTES, 'UTF-8');
+            $imagenBD = $mascota['imagen'] ?? '';
+$nombreArchivo = basename($imagenBD); // extrae solo el nombre
+$imagen = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . htmlspecialchars($nombreArchivo, ENT_QUOTES, 'UTF-8');
+
+
+
             $nombre      = htmlspecialchars($mascota['nombre'] ?? '', ENT_QUOTES, 'UTF-8');
             $descripcion = htmlspecialchars($mascota['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
             $categoria   = htmlspecialchars($mascota['categoria'] ?? '', ENT_QUOTES, 'UTF-8');
@@ -87,7 +94,13 @@ $_SESSION['pgActual'] = "animalesPerdidos";
             ?>
             <div class="col">
               <div class="card h-100 shadow-sm rounded-4 small">
-                <img class="card-img-top rounded-4" src="<?php echo $imagen; ?>" alt="Imagen de mascota" style="object-fit:cover; height:230px;">
+                <div class="col-12 col-sm-auto text-center mb-3 mb-sm-0">
+                  <img class="img-fluid rounded-4"
+                    style="height: 220px; object-fit: cover; width: 220px; max-width: 100%;"
+                    src="<?php echo $imagen; ?>"
+                    alt="Imagen de mascota">
+                </div>
+
                 <div class="card-body">
                   <h5 class="card-title fw-bold"><?php echo $nombre; ?></h5>
                   <p class="card-text"><b>Descripciones:</b> <?php echo $descripcion; ?></p>

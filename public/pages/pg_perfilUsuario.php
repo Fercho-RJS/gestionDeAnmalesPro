@@ -106,6 +106,7 @@ $_SESSION['pgActual'] = "perfil";
     require PUBLIC_PAGES_COMPONENTS . 'support.php';
     ?>
   </section>
+  <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
 </body>
 
 </html>

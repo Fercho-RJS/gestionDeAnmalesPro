@@ -160,6 +160,7 @@ $imagen = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . htmlspecialchars($nombreArchivo
     ?>
     <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
   </section>
+  <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
 </body>
 
 </html>

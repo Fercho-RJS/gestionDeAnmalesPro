@@ -99,5 +99,6 @@ $resultMascotas = $stmtMascotas->get_result();
     <?php require PUBLIC_PAGES_COMPONENTS . 'footer.php'; ?>
     <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
   </section>
+  <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
 </body>
 </html>

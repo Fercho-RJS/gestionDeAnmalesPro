@@ -191,5 +191,6 @@ $_SESSION['pgActual'] = "misMascotas";
       });
     }
   </script>
-
+  <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
+</body>
 </html>

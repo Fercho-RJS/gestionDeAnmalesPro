@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 $host = "localhost";
 $usuario = "root";
 $contrasena = "";
-$baseDeDatos = "refugio_bd_new";
+$baseDeDatos = "asd";
 
 // Crear conexión
 $conexion = new mysqli($host, $usuario, $contrasena, $baseDeDatos);

@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php';
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 $_SESSION['pgActual'] = "registro";
 
 if (isset($_SESSION['idPersona'])) {
@@ -30,7 +32,7 @@ if (isset($_SESSION['idPersona'])) {
     <div id="form-registro" class="container my-3">
       <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>registrar-persona.php" method="post" id="form-registro-contenido" class="bg-white shadow-sm p-3">
         <h2 class="text-center mb-4">Registro de Usuario</h2>
-
+        <p class="text-center">Los campos marcados con <b class="text-danger">(*)</b> deben estar rellenos con la información solicitada.</p>
         <?php if (isset($_GET['m'])): ?>
           <?php if ($_GET['m'] == '409'): ?>
             <div class="alert alert-warning text-center">El DNI o el correo electrónico ya están registrados.</div>
@@ -47,15 +49,15 @@ if (isset($_SESSION['idPersona'])) {
         <h5 class="mt-4">Datos personales</h5>
         <div class="row g-3">
           <div class="col-md-6">
-            <label class="form-label">Nombre/s</label>
+            <label class="form-label">Nombre/s <span class="text-danger">*</span></label>
             <input type="text" name="nombre" class="form-control form-control-sm" required>
           </div>
           <div class="col-md-6">
-            <label class="form-label">Apellido/s</label>
+            <label class="form-label">Apellido/s <span class="text-danger">*</span></label>
             <input type="text" name="apellido" class="form-control form-control-sm" required>
           </div>
           <div class="col-md-6">
-            <label class="form-label" for="documento">Documento N°</label>
+            <label class="form-label" for="documento">Documento N° <span class="text-danger">*</span></label>
             <div class="input-group input-group-sm">
               <input type="text" name="documento" id="documento" class="form-control" required
                 inputmode="numeric" pattern="[0-9]+" maxlength="10"
@@ -69,10 +71,10 @@ if (isset($_SESSION['idPersona'])) {
             </div>
           </div>
 
-
           <div class="col-md-6">
-            <label class="form-label">Tipo de documento</label>
-            <select name="tipoDocumento" class="form-select form-select-sm">
+            <label class="form-label">Tipo de documento <span class="text-danger">*</span></label>
+            <select name="tipoDocumento" class="form-select form-select-sm" required>
+              <option value="" disabled selected>Seleccione</option>
               <option value="1">DNI</option>
               <option value="2">Pasaporte</option>
               <option value="3">Otro</option>
@@ -88,7 +90,7 @@ if (isset($_SESSION['idPersona'])) {
             <input type="text" name="telefono" class="form-control form-control-sm">
           </div>
           <div class="col-md-6">
-            <label class="form-label">Correo Electrónico</label>
+            <label class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
             <input type="email" name="email" class="form-control form-control-sm" required>
           </div>
         </div>
@@ -97,11 +99,11 @@ if (isset($_SESSION['idPersona'])) {
         <h5 class="mt-4">Domicilio</h5>
         <div class="row g-3">
           <div class="col-md-6">
-            <label class="form-label">Calle</label>
+            <label class="form-label">Calle <span class="text-danger">*</span></label>
             <input type="text" name="domicilio" class="form-control form-control-sm" required>
           </div>
           <div class="col-md-3">
-            <label class="form-label">Altura</label>
+            <label class="form-label">Altura <span class="text-danger">*</span></label>
             <input type="text" name="domicilioAltura" class="form-control form-control-sm" required>
           </div>
           <div class="col-md-3">
@@ -113,7 +115,7 @@ if (isset($_SESSION['idPersona'])) {
             <input type="text" name="depto" class="form-control form-control-sm">
           </div>
           <div class="col-md-6">
-            <label class="form-label">Barrio</label>
+            <label class="form-label">Barrio <span class="text-danger">*</span></label>
             <select class="form-select form-select-sm" name="barrio" required>
               <option selected disabled>Seleccione su barrio</option>
               <option value="Belgrano">Belgrano</option>
@@ -131,11 +133,11 @@ if (isset($_SESSION['idPersona'])) {
             </select>
           </div>
           <div class="col-md-6">
-            <label class="form-label">Localidad</label>
+            <label class="form-label">Localidad <span class="text-danger">*</span></label>
             <input type="text" name="localidad" class="form-control form-control-sm" required>
           </div>
           <div class="col-md-6">
-            <label class="form-label">Provincia</label>
+            <label class="form-label">Provincia <span class="text-danger">*</span></label>
             <input type="text" name="provincia" class="form-control form-control-sm" required>
           </div>
         </div>
@@ -144,11 +146,11 @@ if (isset($_SESSION['idPersona'])) {
         <h5 class="mt-4">Datos de acceso</h5>
         <div class="row g-3">
           <div class="col-md-6">
-            <label class="form-label">Contraseña</label>
+            <label class="form-label">Contraseña <span class="text-danger">*</span></label>
             <input type="password" name="contrasena" class="form-control form-control-sm" required>
           </div>
           <div class="col-md-6">
-            <label class="form-label">Confirmar Contraseña</label>
+            <label class="form-label">Confirmar Contraseña <span class="text-danger">*</span></label>
             <input type="password" name="validarContrasena" class="form-control form-control-sm" required>
           </div>
         </div>

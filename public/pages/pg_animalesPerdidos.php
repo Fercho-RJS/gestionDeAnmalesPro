@@ -33,7 +33,7 @@ $_SESSION['pgActual'] = "animalesPerdidos";
           <h1><b>Base de datos</b> — Mascotas extraviadas</h1>
         </div>
         <div class="col-xl-6 col-lg-auto text-end">
-          <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_reportar_extravio.php" class="btn btn-sm rounded-pill btn-danger px-3">Reportar</a>
+          <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_reportarExtraviado.php" class="btn btn-sm rounded-pill btn-danger px-3">Reportar</a>
         </div>
       </div>
       <hr>

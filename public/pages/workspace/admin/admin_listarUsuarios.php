@@ -33,18 +33,18 @@ $result = $conexion->query($sql);
   <?php require PUBLIC_PAGES_COMPONENTS . 'link-styles.php'; ?>
   <link rel="stylesheet" href="<?php echo PUBLIC_STYLES_URL; ?>custom-navbar.css">
   <link rel="stylesheet" href="<?php echo PUBLIC_STYLES_URL; ?>custom-support.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
 
 <body>
   <section id="ContenedorGeneral">
-    <?php
-    require PUBLIC_PAGES_COMPONENTS . 'adm_navbar.php';
-    ?>
+    <?php require PUBLIC_PAGES_COMPONENTS . 'adm_navbar.php'; ?>
 
     <div class="container my-4">
       <h1 class="mb-4">Listado de usuarios</h1>
 
-      <table class="table table-striped table-hover">
+      <table class="table table-striped table-hover align-middle">
         <thead class="table-dark">
           <tr>
             <th>ID</th>
@@ -65,7 +65,24 @@ $result = $conexion->query($sql);
               <td><?php echo htmlspecialchars($row['apellido']); ?></td>
               <td><?php echo htmlspecialchars($row['email']); ?></td>
               <td><?php echo htmlspecialchars($row['dni']); ?></td>
-              <td><?php echo $row['rol']; ?></td>
+              <td>
+                <!-- Formulario para cambiar rol -->
+                <form action="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/usuario/admin_updateRol.php" method="post" class="d-flex align-items-center">
+                  <input type="hidden" name="idUsuario" value="<?php echo $row['idUsuario']; ?>">
+                  <select name="rol" class="form-select form-select-sm me-2">
+                    <?php
+                    $roles = ["Administrador", "Ayudante", "Veterinario", "Usuario", "Publicista", "Invitado"];
+                    foreach ($roles as $rol) {
+                      $selected = ($row['rol'] === $rol) ? "selected" : "";
+                      echo "<option value='$rol' $selected>$rol</option>";
+                    }
+                    ?>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-outline-primary" title="Guardar rol">
+                    <i class="bi bi-save fs-5"></i>
+                  </button>
+                </form>
+              </td>
               <td>
                 <?php if ($row['habilitado'] == 1): ?>
                   <span class="badge bg-success">Habilitado</span>
@@ -78,21 +95,31 @@ $result = $conexion->query($sql);
                 <form action="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/usuario/admin_toggleUsuario.php" method="post" class="d-inline">
                   <input type="hidden" name="idUsuario" value="<?php echo $row['idUsuario']; ?>">
                   <input type="hidden" name="habilitado" value="<?php echo $row['habilitado'] == 1 ? 0 : 1; ?>">
-                  <button type="submit" class="btn btn-sm <?php echo $row['habilitado'] == 1 ? 'btn-danger' : 'btn-success'; ?>">
-                    <?php echo $row['habilitado'] == 1 ? 'Deshabilitar' : 'Habilitar'; ?>
+                  <button type="submit" class="btn btn-sm <?php echo $row['habilitado'] == 1 ? 'btn-danger' : 'btn-success'; ?>" 
+                          title="<?php echo $row['habilitado'] == 1 ? 'Deshabilitar' : 'Habilitar'; ?>">
+                    <?php if ($row['habilitado'] == 1): ?>
+                      <i class="bi bi-person-x fs-5"></i>
+                    <?php else: ?>
+                      <i class="bi bi-person-check fs-5"></i>
+                    <?php endif; ?>
                   </button>
                 </form>
 
                 <!-- Botón editar -->
-                <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/editarUsuario.php?id=<?php echo $row['idUsuario']; ?>" class="btn btn-sm btn-primary">Editar</a>
+                <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/editarUsuario.php?id=<?php echo $row['idUsuario']; ?>" 
+                   class="btn btn-sm btn-primary" title="Editar usuario">
+                  <i class="bi bi-pencil-square fs-5"></i>
+                </a>
 
                 <!-- Botón eliminar -->
-                <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>admin_eliminar_usuario.php" method="post" class="d-inline" onsubmit="return confirm('¿Seguro que desea eliminar este usuario?');">
+                <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>admin_eliminar_usuario.php" method="post" class="d-inline" 
+                      onsubmit="return confirm('¿Seguro que desea eliminar este usuario?');">
                   <input type="hidden" name="idUsuario" value="<?php echo $row['idUsuario']; ?>">
-                  <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                  <button type="submit" class="btn btn-sm btn-outline-danger fs-5" title="Eliminar usuario">
+                    <i class="bi bi-trash"></i>
+                  </button>
                 </form>
               </td>
-
             </tr>
           <?php endwhile; ?>
         </tbody>

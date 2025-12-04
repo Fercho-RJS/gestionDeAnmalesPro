@@ -4,6 +4,7 @@ require_once PUBLIC_PHP_FUNCTIONS . 'conectar-bdd.php';
 session_start();
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
+// Validar sesión
 if (!isset($_SESSION['rol']) || !isset($_SESSION['idUsuario'])) {
   header("Location: " . PUBLIC_PAGES_URL . "pg_login.php?m=401");
   exit("No autenticado.");
@@ -11,13 +12,14 @@ if (!isset($_SESSION['rol']) || !isset($_SESSION['idUsuario'])) {
 
 $idMascota   = isset($_GET['idMascota']) ? (int)$_GET['idMascota'] : 0;
 $nuevoEstado = $_GET['nuevoEstado'] ?? '';
-$estadosPermitidos = ['Adoptado', 'Perdido', 'En adopción'];
+$estadosPermitidos = ['Adoptado', 'Perdido', 'En adopción', 'Pendiente'];
 
 if ($idMascota <= 0 || !in_array($nuevoEstado, $estadosPermitidos, true)) {
   header("Location: " . PUBLIC_PAGES_URL . "pg_misMascotas.php?m=402");
   exit("Parámetros inválidos.");
 }
 
+// Verificar que la mascota pertenece al usuario
 $verificar = $conexion->prepare("
   SELECT idMascota FROM mascota 
   WHERE idMascota = ? AND Usuario_idUsuario = ?
@@ -65,9 +67,8 @@ try {
       $existe->close();
     }
 
-    $deleteAdopcion = $conexion->prepare("
-      DELETE FROM adopciones WHERE Mascota_idMascota = ?
-    ");
+    // Eliminar adopciones si estaba en adopción
+    $deleteAdopcion = $conexion->prepare("DELETE FROM adopciones WHERE Mascota_idMascota = ?");
     $deleteAdopcion->bind_param("i", $idMascota);
     $deleteAdopcion->execute();
     $deleteAdopcion->close();
@@ -75,16 +76,14 @@ try {
 
   // Si es En adopción
   if ($nuevoEstado === 'En adopción') {
-    $deletePerdido = $conexion->prepare("
-      DELETE FROM perdidos WHERE Mascota_idMascota = ? AND status = 'Perdido'
-    ");
+    // Eliminar registros de perdidos
+    $deletePerdido = $conexion->prepare("DELETE FROM perdidos WHERE Mascota_idMascota = ?");
     $deletePerdido->bind_param("i", $idMascota);
     $deletePerdido->execute();
     $deletePerdido->close();
 
-    $checkAdopcion = $conexion->prepare("
-      SELECT idAdopciones FROM adopciones WHERE Mascota_idMascota = ? LIMIT 1
-    ");
+    // Verificar adopción
+    $checkAdopcion = $conexion->prepare("SELECT idAdopciones FROM adopciones WHERE Mascota_idMascota = ? LIMIT 1");
     $checkAdopcion->bind_param("i", $idMascota);
     $checkAdopcion->execute();
     $checkAdopcion->store_result();
@@ -113,13 +112,13 @@ try {
 
   // Si es Adoptado
   if ($nuevoEstado === 'Adoptado') {
-    $deletePerdido = $conexion->prepare("
-      DELETE FROM perdidos WHERE Mascota_idMascota = ? AND status = 'Perdido'
-    ");
+    // Eliminar registros de perdidos
+    $deletePerdido = $conexion->prepare("DELETE FROM perdidos WHERE Mascota_idMascota = ?");
     $deletePerdido->bind_param("i", $idMascota);
     $deletePerdido->execute();
     $deletePerdido->close();
 
+    // Actualizar o insertar adopción
     $updateAdopcion = $conexion->prepare("
       UPDATE adopciones 
       SET estado = 'Vigente', fecha_adopcion = CURDATE(), Usuario_idUsuario = ?
@@ -142,10 +141,28 @@ try {
     }
   }
 
+  // Si es Pendiente (ej: reportar encuentro)
+  if ($nuevoEstado === 'Pendiente') {
+    // Eliminar cualquier registro previo en perdidos
+    $deletePrev = $conexion->prepare("DELETE FROM perdidos WHERE Mascota_idMascota = ?");
+    $deletePrev->bind_param("i", $idMascota);
+    $deletePrev->execute();
+    $deletePrev->close();
+
+    // Insertar nuevo registro como Pendiente
+    $insertPendiente = $conexion->prepare("
+        INSERT INTO perdidos (Mascota_idMascota, status, fecha_de_reporte) 
+        VALUES (?, 'Pendiente', CURDATE())
+    ");
+    $insertPendiente->bind_param("i", $idMascota);
+    $insertPendiente->execute();
+    $insertPendiente->close();
+  }
+
+
   $conexion->commit();
   header("Location: " . PUBLIC_PAGES_URL . "pg_misMascotas.php?m=201");
   exit();
-
 } catch (Throwable $e) {
   $conexion->rollback();
   error_log('Error cambiar-estado-animal: ' . $e->getMessage());

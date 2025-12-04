@@ -77,8 +77,8 @@ $_SESSION['pgActual'] = "animalesPerdidos";
           <?php while ($mascota = $resultado->fetch_assoc()): ?>
             <?php
             $imagenBD = $mascota['imagen'] ?? '';
-$nombreArchivo = basename($imagenBD); // extrae solo el nombre
-$imagen = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . htmlspecialchars($nombreArchivo, ENT_QUOTES, 'UTF-8');
+            $nombreArchivo = basename($imagenBD); // extrae solo el nombre
+            $imagen = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . htmlspecialchars($nombreArchivo, ENT_QUOTES, 'UTF-8');
 
 
 
@@ -93,65 +93,72 @@ $imagen = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . htmlspecialchars($nombreArchivo
             $status      = htmlspecialchars($mascota['status_perdido'] ?? '', ENT_QUOTES, 'UTF-8');
             ?>
             <div class="col">
-              <div class="card h-100 shadow-sm rounded-4 small">
-                <div class="col-12 col-sm-auto text-center mb-3 mb-sm-0">
-                  <img class="img-fluid rounded-4"
-                    style="height: 220px; object-fit: cover; width: 220px; max-width: 100%;"
-                    src="<?php echo $imagen; ?>"
-                    alt="Imagen de mascota">
+              <div class="card h-100 shadow-sm rounded-4 p-3 d-flex flex-row gap-3 align-items-start">
+                <!-- Imagen a la izquierda -->
+                <div class="flex-shrink-0">
+                  <img src="<?php echo $imagen; ?>" alt="Imagen de mascota"
+                    class="rounded-4" style="width: 160px; height: 160px; object-fit: cover;">
                 </div>
 
-                <div class="card-body">
-                  <h5 class="card-title fw-bold"><?php echo $nombre; ?></h5>
-                  <p class="card-text"><b>Descripciones:</b> <?php echo $descripcion; ?></p>
-                  <p class="card-text mb-0"><b>Categoría:</b> <?php echo $categoria; ?> | <b>Raza:</b> <?php echo $raza; ?></p>
-                  <p class="card-text mb-0"><b>Fecha de reporte:</b> <?php echo $fecha; ?></p>
-                  <p class="card-text mb-0"><b>Edad:</b> <?php echo $edad; ?> Año/s</p>
-                  <p class="card-text mb-0"><b>Color/es de Identidad:</b> <?php echo $color; ?></p>
-                  <p class="card-text mb-0"><b>Altura / Tamaño:</b> <?php echo $height; ?></p>
+                <!-- Datos a la derecha -->
+                <div class="flex-grow-1 small">
+                  <h5 class="fw-bold mb-2"><?php echo $nombre; ?></h5>
+                  <p class="mb-1"><b>Descripciones:</b> <?php echo $descripcion; ?></p>
+                  <p class="mb-1"><b>Categoría:</b> <?php echo $categoria; ?> | <b>Raza:</b> <?php echo $raza; ?></p>
+                  <p class="mb-1"><b>Fecha de reporte:</b> <?php echo $fecha; ?></p>
+                  <p class="mb-1"><b>Edad:</b> <?php echo $edad; ?> Año/s</p>
+                  <p class="mb-1"><b>Color/es:</b> <?php echo $color; ?></p>
+                  <p class="mb-3"><b>Tamaño:</b> <?php echo $height; ?></p>
+
+                  <div class="d-flex justify-content-between align-items-center">
+                    <?php if ($status === 'Perdido'): ?>
+                      <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_reportarEncuentro.php?id=<?php echo (int)$mascota['idMascota']; ?>"
+                        class="btn btn-sm btn-danger">
+                        <?php echo $status; ?>
+                      </a>
+                    <?php elseif ($status === 'Encontrado'): ?>
+                      <span class="btn btn-sm btn-success"><?php echo $status; ?></span>
+                    <?php else: ?>
+                      <span class="btn btn-sm btn-secondary"><?php echo $status; ?></span>
+                    <?php endif; ?>
+                    
+                    <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_reportarEncuentro.php?id=<?php echo (int)$mascota['idMascota']; ?>"
+                      class="btn btn-sm btn-outline-danger">S.O.S</a>
+                  </div>
                 </div>
-                <div class="card-footer d-flex justify-content-between align-items-center">
-                  <span class="btn btn-sm 
-                  <?php
-                  if ($status === 'Encontrado') echo 'btn-success';
-                  elseif ($status === 'Perdido') echo 'btn-danger';
-                  else echo 'btn-secondary'; ?>">
-                    <?php echo $status; ?>
-                  </span>
-                  <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_reportar_extravio.php?id=<?php echo (int)$mascota['idMascota']; ?>" class="btn btn-sm btn-outline-dark">S.O.S</a>
                 </div>
               </div>
+
+            <?php endwhile; ?>
             </div>
-          <?php endwhile; ?>
-        </div>
 
-        <!-- Paginación -->
-        <nav aria-label="Paginación de mascotas perdidas" class="mt-4">
-          <ul class="pagination justify-content-center">
-            <?php if ($pagina > 1): ?>
-              <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">Anterior</a></li>
-            <?php else: ?>
-              <li class="page-item disabled"><span class="page-link">Anterior</span></li>
-            <?php endif; ?>
+            <!-- Paginación -->
+            <nav aria-label="Paginación de mascotas perdidas" class="mt-4">
+              <ul class="pagination justify-content-center">
+                <?php if ($pagina > 1): ?>
+                  <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">Anterior</a></li>
+                <?php else: ?>
+                  <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                <?php endif; ?>
 
-            <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-              <li class="page-item <?php if ($i == $pagina) echo 'active'; ?>">
-                <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-              </li>
-            <?php endfor; ?>
+                <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                  <li class="page-item <?php if ($i == $pagina) echo 'active'; ?>">
+                    <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+                  </li>
+                <?php endfor; ?>
 
-            <?php if ($pagina < $totalPaginas): ?>
-              <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">Siguiente</a></li>
-            <?php else: ?>
-              <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
-            <?php endif; ?>
-          </ul>
-        </nav>
-      <?php else: ?>
-        <div class="alert alert-dark" role="alert">
-          No hay mascotas registradas como perdidas.
-        </div>
-      <?php endif; ?>
+                <?php if ($pagina < $totalPaginas): ?>
+                  <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">Siguiente</a></li>
+                <?php else: ?>
+                  <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                <?php endif; ?>
+              </ul>
+            </nav>
+          <?php else: ?>
+            <div class="alert alert-dark" role="alert">
+              No hay mascotas registradas como perdidas.
+            </div>
+          <?php endif; ?>
     </section>
 
     <?php

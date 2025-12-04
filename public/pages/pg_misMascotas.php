@@ -32,12 +32,15 @@ $_SESSION['pgActual'] = "misMascotas";
           <p>Mascotas de <b><?php echo strtoupper($_SESSION['user']); ?></b></p>
         </div>
         <div class="col-xl-6 col-lg-auto text-end">
-          <a id="new_mascota"
-            <?php echo ($_SESSION['rol'] == 'Invitado')
-              ? 'href=""'
-              : 'href="' . PUBLIC_PAGES_URL . 'workspace/animals/forms/newMascotaType.php"'; ?>
-            class="btn btn-sm rounded-pill btn-success px-3">Registrar</a>
+          <?php if ($_SESSION['rol'] !== 'Invitado'): ?>
+            <a id="new_mascota"
+              href="<?php echo PUBLIC_PAGES_URL; ?>workspace/animals/forms/newMascotaType.php"
+              class="btn btn-sm rounded-pill btn-success px-3 fs-5">
+              Registrar
+            </a>
+          <?php endif; ?>
         </div>
+
       </div>
       <hr>
 
@@ -88,11 +91,13 @@ $_SESSION['pgActual'] = "misMascotas";
                       <div class="d-flex gap-0 flex-wrap">
                         <a onclick="cambiar_estado(<?php echo $mascota['idMascota']; ?>)"
                           class="mb-0 mt-3 w-50 btn btn-sm p-0 rounded-pill 
-                         <?php if ($mascota['status'] == 'Adoptado') echo 'btn-success'; ?>
-                         <?php if ($mascota['status'] == 'Perdido') echo 'btn-danger'; ?>
-                         <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?> col-8">
+   <?php if ($mascota['status'] == 'Adoptado') echo 'btn-success'; ?>
+   <?php if ($mascota['status'] == 'Perdido') echo 'btn-danger'; ?>
+   <?php if ($mascota['status'] == 'Pendiente') echo 'btn-secondary'; ?>
+   <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?> col-8">
                           <?php echo htmlspecialchars($mascota['status']); ?>
                         </a>
+
                         <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/animals/form_edit_animal.php?id=<?php echo $mascota['idMascota']; ?>"
                           class="btn btn-outline-dark w-25 ms-2 mt-3 btn-sm p-0 rounded-pill">Editar</a>
                         <button onclick="capturarTarjeta(this)" class="btn btn-sm btn-outline-primary mt-2 w-100">Capturar como imagen</button>
@@ -145,7 +150,7 @@ $_SESSION['pgActual'] = "misMascotas";
 
   <script>
     function cambiar_estado(idMascota) {
-      const estados = ['Adoptado', 'Perdido', 'En adopción'];
+      const estados = ['Adoptado', 'Perdido', 'En adopción', 'Pendiente'];
       let selectHTML = '<select id="nuevoEstado" class="form-select">';
       estados.forEach(estado => {
         selectHTML += `<option value="${estado}">${estado}</option>`;
@@ -193,4 +198,5 @@ $_SESSION['pgActual'] = "misMascotas";
   </script>
   <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
 </body>
+
 </html>

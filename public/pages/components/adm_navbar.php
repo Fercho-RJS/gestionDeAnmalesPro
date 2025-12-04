@@ -1,5 +1,3 @@
-<?php // require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php'; 
-?>
 <?php
 //session_start();
 require_once PUBLIC_PAGES_COMPONENTS . 'link-styles.php';
@@ -13,12 +11,20 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
 ?>
 
 <style>
-  nav .nav-link {
-    color: white !important;
+  /* Navbar personalizada para Admin */
+  .navbar-admin {
+    background-color: #e74c3c !important; /* rojo adaptable */
+  }
+  .navbar-admin .nav-link {
+    color: #fff !important;
+  }
+  .navbar-admin .nav-link.active {
+    font-weight: bold;
+    text-decoration: underline;
   }
 </style>
 
-<nav class="navbar navbar-expand-lg bg-danger shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-admin shadow-sm">
   <div class="container-fluid">
     <!-- Logo -->
     <a class="navbar-brand ms-3" href="<?php echo BASE_URL; ?>/index.php">
@@ -26,21 +32,21 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
     </a>
 
     <!-- Botón responsive -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+    <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarAdmin" aria-controls="navbarAdmin"
       aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+      <i class="bi bi-list fs-2"></i>
     </button>
 
     <!-- Links -->
     <div class="collapse navbar-collapse" id="navbarAdmin">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex gap-2 gap-xl-4 text-center">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex gap-3 text-center">
 
         <!-- Dashboard -->
         <li class="nav-item">
           <a class="nav-link <?php echo $pg_actual === 'dashboard' ? 'active' : ''; ?>"
             href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/pg_adm_workspace.php">
-            <i class="bi bi-speedometer2 me-1"></i>Panel
+            <i class="bi bi-speedometer2 fs-3"></i>
           </a>
         </li>
 
@@ -48,15 +54,15 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
         <li class="nav-item">
           <a class="nav-link <?php echo $pg_actual === 'usuarios' ? 'active' : ''; ?>"
             href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/admin_listarUsuarios.php">
-            <i class="bi bi-people-fill me-1"></i>Usuarios
+            <i class="bi bi-people-fill fs-3"></i>
           </a>
         </li>
 
         <!-- Gestión de mascotas -->
         <li class="nav-item">
           <a class="nav-link <?php echo $pg_actual === 'mascotas' ? 'active' : ''; ?>"
-            href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_gestionMascotas.php">
-            <i class="bi bi-paw-fill me-1"></i>Mascotas
+            href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/admin_listarMascotas.php">
+            <i class="bi bi-search-heart fs-3"></i>
           </a>
         </li>
 
@@ -64,11 +70,11 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle <?php echo in_array($pg_actual, ['reportes', 'perdidos']) ? 'active' : ''; ?>"
             href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-clipboard-data me-1"></i>Reportes
+            <i class="bi bi-clipboard-data fs-3"></i>
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_reportesGenerales.php">Generales</a></li>
-            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_reportesPerdidos.php">Mascotas perdidas</a></li>
+            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_reportesGenerales.php"><i class="bi bi-bar-chart"></i> Generales</a></li>
+            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_reportesPerdidos.php"><i class="bi bi-search"></i> Mascotas perdidas</a></li>
           </ul>
         </li>
 
@@ -76,7 +82,7 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
         <li class="nav-item">
           <a class="nav-link <?php echo $pg_actual === 'configuracion' ? 'active' : ''; ?>"
             href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_configuracion.php">
-            <i class="bi bi-gear-fill me-1"></i>Configuración
+            <i class="bi bi-gear-fill fs-3"></i>
           </a>
         </li>
 
@@ -84,22 +90,17 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
         <li class="nav-item">
           <a class="nav-link <?php echo $pg_actual === 'perfil' ? 'active' : ''; ?>"
             href="<?php echo PUBLIC_PAGES_URL; ?>pg_perfilUsuario.php">
-            <i class="bi bi-person-circle me-1"></i><?php echo $_SESSION['nombre']; ?>
+            <i class="bi bi-person-circle fs-3"></i>
           </a>
         </li>
 
-        <!-- Modo oscuro -->
-        <!--<li>
-          <button id="darkModeToggle" class="btn btn-outline-secondary rounded-circle">
-            <i id="darkModeIcon" class="bi bi-sun-fill"></i>
-          </button>
-        </li>-->
-
         <!-- Logout -->
-        <li>
-          <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>logout.php" method="post" onsubmit="return confirmarLogout();">
-            <button class="btn text-white fs-5" type="submit" aria-label="Cerrar sesión">
-              <i class="bi bi-door-open-fill"></i>
+        <li class="nav-item">
+          <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>logout.php" method="post"
+            onsubmit="return confirmarLogout();" class="d-inline">
+            <button class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
+              type="submit" aria-label="Cerrar sesión" style="width:45px; height:45px;">
+              <i class="bi bi-box-arrow-right fs-4"></i>
             </button>
           </form>
         </li>

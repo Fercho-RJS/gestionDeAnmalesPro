@@ -5,12 +5,14 @@ session_start();
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // Validar sesión
-if (!isset($_SESSION['rol']) || !isset($_SESSION['idUsuario'])) {
+if (!isset($_SESSION['idUsuario'])) {
   header("Location: " . PUBLIC_PAGES_URL . "pg_login.php?m=401");
   exit("No autenticado.");
 }
 
+$idUsuario = (int)$_SESSION['idUsuario'];
 $idMascota = isset($_GET['idMascota']) ? (int)$_GET['idMascota'] : 0;
+
 if ($idMascota <= 0) {
   header("Location: " . PUBLIC_PAGES_URL . "pg_listaDeEspera.php?m=402");
   exit("Parámetros inválidos.");
@@ -22,10 +24,11 @@ $verificar = $conexion->prepare("
   WHERE idMascota = ? AND Usuario_idUsuario = ?
   LIMIT 1
 ");
-$verificar->bind_param("ii", $idMascota, $_SESSION['idUsuario']);
+$verificar->bind_param("ii", $idMascota, $idUsuario);
 $verificar->execute();
 $verificar->store_result();
 if ($verificar->num_rows === 0) {
+  $verificar->close();
   header("Location: " . PUBLIC_PAGES_URL . "pg_listaDeEspera.php?m=404");
   exit("Mascota no encontrada o no te pertenece.");
 }
@@ -34,13 +37,13 @@ $verificar->close();
 $conexion->begin_transaction();
 
 try {
-  // 1. Actualizar estado en mascota
+  // 1. Actualizar estado en mascota → Adoptado
   $update = $conexion->prepare("UPDATE mascota SET status = 'Adoptado' WHERE idMascota = ?");
   $update->bind_param("i", $idMascota);
   $update->execute();
   $update->close();
 
-  // 2. Eliminar cualquier registro en perdidos (Pendiente o Perdido)
+  // 2. Eliminar cualquier registro en perdidos
   $deletePerdido = $conexion->prepare("DELETE FROM perdidos WHERE Mascota_idMascota = ?");
   $deletePerdido->bind_param("i", $idMascota);
   $deletePerdido->execute();
@@ -52,7 +55,7 @@ try {
     SET estado = 'Vigente', fecha_adopcion = CURDATE(), Usuario_idUsuario = ?
     WHERE Mascota_idMascota = ?
   ");
-  $updateAdopcion->bind_param("ii", $_SESSION['idUsuario'], $idMascota);
+  $updateAdopcion->bind_param("ii", $idUsuario, $idMascota);
   $updateAdopcion->execute();
 
   if ($updateAdopcion->affected_rows === 0) {
@@ -61,7 +64,7 @@ try {
       INSERT INTO adopciones (Mascota_idMascota, estado, fecha_adopcion, Usuario_idUsuario)
       VALUES (?, 'Vigente', CURDATE(), ?)
     ");
-    $insertAdopcion->bind_param("ii", $idMascota, $_SESSION['idUsuario']);
+    $insertAdopcion->bind_param("ii", $idMascota, $idUsuario);
     $insertAdopcion->execute();
     $insertAdopcion->close();
   } else {

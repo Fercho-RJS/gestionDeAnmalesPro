@@ -110,8 +110,11 @@ $_SESSION['pgActual'] = "misMascotas";
                           </span>
                         <?php endif; ?>
 
-                        <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/animals/form_edit_animal.php?id=<?php echo $mascota['idMascota']; ?>"
-                          class="btn btn-outline-dark w-25 ms-2 mt-3 btn-sm p-0 rounded-pill">Editar</a>
+                        <a href="javascript:void(0)"
+                          class="btn btn-outline-dark w-25 ms-2 mt-3 btn-sm p-0 rounded-pill"
+                          onclick="abrirModalEditar(<?php echo htmlspecialchars(json_encode($mascota)); ?>)">
+                          Editar
+                        </a>
                         <button onclick="capturarTarjeta(this)" class="btn btn-sm btn-outline-primary mt-2 w-100">Capturar como imagen</button>
                       </div>
                     </div>
@@ -209,6 +212,80 @@ $_SESSION['pgActual'] = "misMascotas";
     }
   </script>
   <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
+
+  <!-- Modal Editar Mascota -->
+  <div class="modal fade" id="modalEditarMascota" tabindex="-1" aria-labelledby="modalEditarMascotaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="modalEditarMascotaLabel">Editar Mascota</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <form id="formEditarMascota" method="post" action="<?php echo PUBLIC_PAGES_URL; ?>workspace/animals/action/editar-mascota.php" enctype="multipart/form-data">
+          <div class="modal-body">
+            <input type="hidden" name="idMascota" id="edit_idMascota">
+
+            <div class="mb-3">
+              <label for="edit_nombre" class="form-label fw-bold">Nombre</label>
+              <input type="text" class="form-control" id="edit_nombre" name="nombre" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_categoria" class="form-label fw-bold">Categoría</label>
+              <input type="text" class="form-control" id="edit_categoria" name="categoria" required>
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_raza" class="form-label fw-bold">Raza</label>
+              <input type="text" class="form-control" id="edit_raza" name="raza">
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_edad" class="form-label fw-bold">Edad</label>
+              <input type="number" class="form-control" id="edit_edad" name="edad" min="0">
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_color" class="form-label fw-bold">Color/es</label>
+              <input type="text" class="form-control" id="edit_color" name="color">
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_height" class="form-label fw-bold">Altura/Tamaño</label>
+              <input type="text" class="form-control" id="edit_height" name="height">
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_imagen" class="form-label fw-bold">Imagen</label>
+              <input type="file" class="form-control" id="edit_imagen" name="imagenMascota" accept="image/*">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success rounded-pill">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function abrirModalEditar(mascota) {
+      // Cargar datos en el modal
+      document.getElementById('edit_idMascota').value = mascota.idMascota;
+      document.getElementById('edit_nombre').value = mascota.nombre_mascota || '';
+      document.getElementById('edit_categoria').value = mascota.categoria || '';
+      document.getElementById('edit_raza').value = mascota.raza || '';
+      document.getElementById('edit_edad').value = mascota.edad || '';
+      document.getElementById('edit_color').value = mascota.color || '';
+      document.getElementById('edit_height').value = mascota.height || '';
+
+      // Mostrar modal
+      var modal = new bootstrap.Modal(document.getElementById('modalEditarMascota'));
+      modal.show();
+    }
+  </script>
+
 </body>
 
 </html>

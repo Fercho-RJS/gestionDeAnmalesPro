@@ -9,7 +9,7 @@ require_once PUBLIC_PHP_FUNCTIONS . 'conectar-bdd.php';
 require_once PUBLIC_PHP_FUNCTIONS . 'logging.php';
 
 if (!session_id()) {
-    session_start();
+  session_start();
 }
 
 // Usuario invitado fijo
@@ -25,7 +25,7 @@ $sql = "SELECT u.idUsuario, u.rol,
 
 $stmt = $conexion->prepare($sql);
 if (!$stmt) {
-    exit("Error en prepare: " . $conexion->error);
+  exit("Error en prepare: " . $conexion->error);
 }
 
 $stmt->bind_param("s", $email);
@@ -33,55 +33,64 @@ $stmt->execute();
 $stmt->store_result();
 
 if ($stmt->num_rows === 0) {
-    // Si no existe el usuario invitado, lo creamos automáticamente
-    $crearPersona = $conexion->prepare("
+  // Si no existe el usuario invitado, lo creamos automáticamente
+  $crearPersona = $conexion->prepare("
         INSERT INTO persona (nombre, apellido, dni, email, telefono, barrio, direccion, calleAltura, localidad, provincia)
         VALUES ('Invitado', '', '00000000', ?, '', '', '', '', '', '')
     ");
-    $crearPersona->bind_param("s", $email);
-    $crearPersona->execute();
-    $idPersona = $conexion->insert_id;
-    $crearPersona->close();
+  $crearPersona->bind_param("s", $email);
+  $crearPersona->execute();
+  $idPersona = $conexion->insert_id;
+  $crearPersona->close();
 
-    $crearUsuario = $conexion->prepare("
+  $crearUsuario = $conexion->prepare("
         INSERT INTO usuario (Persona_idPersona, rol, password, habilitado)
         VALUES (?, 'Invitado', '', 1)
     ");
-    $crearUsuario->bind_param("i", $idPersona);
-    $crearUsuario->execute();
-    $idUsuario = $conexion->insert_id;
-    $crearUsuario->close();
+  $crearUsuario->bind_param("i", $idPersona);
+  $crearUsuario->execute();
+  $idUsuario = $conexion->insert_id;
+  $crearUsuario->close();
 
-    // Datos de sesión básicos
-    $_SESSION['idPersona']   = $idPersona;
-    $_SESSION['idUsuario']   = $idUsuario;
-    $_SESSION['user']        = $email;
-    $_SESSION['nombre']      = "Invitado";
-    $_SESSION['apellido']    = "";
-    $_SESSION['rol']         = "Invitado";
-    $_SESSION['dni_persona'] = "00000000";
-    $_SESSION['telefono']    = "";
-    $_SESSION['direccion']   = "";
-    $_SESSION['calleAltura'] = "";
+  // Datos de sesión básicos
+  $_SESSION['idPersona']   = $idPersona;
+  $_SESSION['idUsuario']   = $idUsuario;
+  $_SESSION['user']        = $email;
+  $_SESSION['nombre']      = "Invitado";
+  $_SESSION['apellido']    = "";
+  $_SESSION['rol']         = "Invitado";
+  $_SESSION['dni_persona'] = "00000000";
+  $_SESSION['telefono']    = "";
+  $_SESSION['direccion']   = "";
+  $_SESSION['calleAltura'] = "";
 } else {
-    // Vincular resultados si ya existe
-    $stmt->bind_result(
-        $idUsuario, $rol,
-        $idPersona, $nombre, $apellido, $emailDb, $dniPersona,
-        $telefono, $direccion, $calleAltura
-    );
-    $stmt->fetch();
+  // Vincular resultados si ya existe
+  $stmt->bind_result(
+    $idUsuario,
+    $rol,
+    $idPersona,
+    $nombre,
+    $apellido,
+    $emailDb,
+    $dniPersona,
+    $telefono,
+    $direccion,
+    $calleAltura
+  );
+  $stmt->fetch();
 
-    $_SESSION['idPersona']   = $idPersona;
-    $_SESSION['idUsuario']   = $idUsuario;
-    $_SESSION['user']        = $emailDb;
-    $_SESSION['nombre']      = $nombre ?: "Invitado";
-    $_SESSION['apellido']    = $apellido ?: "";
-    $_SESSION['rol']         = $rol ?: "Invitado";
-    $_SESSION['dni_persona'] = $dniPersona ?: "00000000";
-    $_SESSION['telefono']    = $telefono ?: "";
-    $_SESSION['direccion']   = $direccion ?: "";
-    $_SESSION['calleAltura'] = $calleAltura ?: "";
+  // Datos mínimos de invitado
+  $_SESSION['rol']         = "Invitado";
+  $_SESSION['user']        = "guest@invitado.com";
+  $_SESSION['nombre']      = "Invitado";
+  $_SESSION['apellido']    = "";
+  $_SESSION['idUsuario']   = null; // ⚠️ IMPORTANTE: no asignar un idUsuario real
+  $_SESSION['idPersona']   = null;
+  $_SESSION['dni_persona'] = "00000000";
+  $_SESSION['telefono']    = "";
+  $_SESSION['direccion']   = "";
+  $_SESSION['calleAltura'] = "";
+  $_SESSION['pgActual']    = "inicio";
 }
 
 $_SESSION['pgActual'] = "inicio";

@@ -142,7 +142,7 @@ $_SESSION['pgActual'] = "inicio";
                     <?php echo $descripcion ?: 'Sin descripción'; ?><br>
                     <strong>Zona:</strong> <?php echo $lugar ?: 'No especificada'; ?>
                   </p>
-                  <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_reportar_extravio.php?id=<?php echo $idMascota; ?>" class="btn btn-outline-dark w-100 rounded-pill">
+                  <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_animalesPerdidos.php?id=<?php echo $idMascota; ?>" class="btn btn-outline-dark w-100 rounded-pill">
                     <i class="bi bi-search"></i> Más información
                   </a>
                 </div>

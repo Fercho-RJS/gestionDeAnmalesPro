@@ -151,7 +151,7 @@ if (!isset($_SESSION['user']) || $_SESSION['rol'] !== 'Administrador') {
 
             <p class="display-5 fw-bold text-warning mb-3"><?php echo $totalPendientes; ?></p>
 
-            <a href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_configuracion.php"
+            <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/admin_listarUsuarios.php"
               class="btn btn-warning btn-sm rounded-pill px-3">
               <i class="bi bi-eye"></i> Revisar
             </a>
@@ -246,6 +246,7 @@ if (!isset($_SESSION['user']) || $_SESSION['rol'] !== 'Administrador') {
     <?php require PUBLIC_PAGES_COMPONENTS . 'support.php'; ?>
     <?php require PUBLIC_PAGES_COMPONENTS . 'footer.php'; ?>
     <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
+    <?php require PUBLIC_PAGES_COMPONENTS . 'adm-phone-navbar.php'; ?>
   </section>
 </body>
 

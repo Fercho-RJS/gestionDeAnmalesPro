@@ -116,5 +116,6 @@ $result = $conexion->query($sql);
   <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
   <?php require PUBLIC_PAGES_COMPONENTS . 'footer.php'; ?>
   <?php require PUBLIC_PAGES_COMPONENTS . 'support.php'; ?>
+  <?php require PUBLIC_PAGES_COMPONENTS . 'adm-phone-navbar.php'; ?>
 </body>
 </html>

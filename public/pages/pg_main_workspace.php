@@ -56,37 +56,55 @@ $_SESSION['pgActual'] = "inicio";
       <h2 class="section-title">Últimos eventos</h2>
       <hr>
       <div id="eventosRecientes" class="row mt-4">
-        <div class="col-md-4">
-          <div class="card shadow-sm">
-            <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>evento1.jpg" class="card-img-top" alt="Evento 1">
-            <div class="card-body">
-              <h5 class="card-title">🐶 Evento de Adopción</h5>
-              <p class="card-text">Únete a nosotros para un día de adopción de mascotas.</p>
-              <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_adopciones.php" class="btn btn-outline-primary w-100">Más información</a>
+        <?php
+        require_once PUBLIC_PHP_FUNCTIONS . 'conectar-bdd.php';
+        $sqlEventos = "SELECT idEventos, titulo, descripcion, fecha_inicio, fecha_fin, hora_inicio, estado, imagen_portada
+                       FROM eventos
+                       ORDER BY fecha_inicio DESC
+                       LIMIT 3";
+        $resEventos = $conexion->query($sqlEventos);
+        ?>
+
+        <?php if ($resEventos && $resEventos->num_rows > 0): ?>
+          <?php while ($ev = $resEventos->fetch_assoc()): ?>
+            <?php
+            $titulo      = htmlspecialchars($ev['titulo'] ?? '', ENT_QUOTES, 'UTF-8');
+            $descripcion = htmlspecialchars($ev['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
+            $fechaInicio = htmlspecialchars($ev['fecha_inicio'] ?? '', ENT_QUOTES, 'UTF-8');
+            $fechaFin    = htmlspecialchars($ev['fecha_fin'] ?? '', ENT_QUOTES, 'UTF-8');
+            $horaInicio  = htmlspecialchars($ev['hora_inicio'] ?? '', ENT_QUOTES, 'UTF-8');
+            $estado      = htmlspecialchars($ev['estado'] ?? '', ENT_QUOTES, 'UTF-8');
+            $imagen      = !empty($ev['imagen_portada']) ? htmlspecialchars($ev['imagen_portada'], ENT_QUOTES, 'UTF-8')
+              : PUBLIC_RESOURCES_IMAGES_URL . "evento_default.jpg";
+            ?>
+            <div class="col-md-4">
+              <div class="card shadow-sm h-100">
+                <img src="<?php echo $imagen; ?>" class="card-img-top" alt="<?php echo $titulo; ?>">
+                <div class="card-body">
+                  <h5 class="card-title"><?php echo $titulo; ?></h5>
+                  <span class="badge bg-secondary badge-custom mb-2"><?php echo $estado; ?></span>
+                  <p class="card-text small">
+                    <b>Inicio:</b> <?php echo $fechaInicio; ?><br>
+                    <b>Fin:</b> <?php echo $fechaFin; ?><br>
+                    <?php if (!empty($horaInicio)): ?>
+                      <b>Hora:</b> <?php echo $horaInicio; ?><br>
+                    <?php endif; ?>
+                  </p>
+                  <p class="card-text"><?php echo $descripcion ?: 'Sin descripción'; ?></p>
+                  <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_eventos.php" class="btn btn-outline-primary w-100 rounded-pill">
+                    <i class="bi bi-info-circle"></i> Más información
+                  </a>
+                </div>
+              </div>
             </div>
+          <?php endwhile; ?>
+        <?php else: ?>
+          <div class="col-12">
+            <div class="alert alert-info">No hay eventos registrados recientemente.</div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card shadow-sm">
-            <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>evento2.jpg" class="card-img-top" alt="Evento 2">
-            <div class="card-body">
-              <h5 class="card-title">💉 Campaña de Vacunación</h5>
-              <p class="card-text">Aprovecha nuestra campaña de vacunación gratuita para mascotas.</p>
-              <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_veterinarios.php" class="btn btn-outline-primary w-100">Más información</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card shadow-sm">
-            <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>evento3.jpg" class="card-img-top" alt="Evento 3">
-            <div class="card-body">
-              <h5 class="card-title">📚 Taller de Cuidado Animal</h5>
-              <p class="card-text">Aprende sobre el cuidado adecuado de las mascotas en nuestro taller.</p>
-              <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_tienda.php" class="btn btn-outline-primary w-100">Más información</a>
-            </div>
-          </div>
-        </div>
+        <?php endif; ?>
       </div>
+
 
       <!-- Animales extraviados -->
       <h2 class="section-title">Animales extraviados</h2>
@@ -147,7 +165,7 @@ $_SESSION['pgActual'] = "inicio";
     <?php require PUBLIC_PAGES_COMPONENTS . 'footer.php'; ?>
     <?php require PUBLIC_PAGES_COMPONENTS . 'support.php'; ?>
   </section>
-  
+
   <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
 </body>
 

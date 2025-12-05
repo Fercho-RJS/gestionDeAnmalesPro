@@ -89,14 +89,26 @@ $_SESSION['pgActual'] = "misMascotas";
 
                     <div>
                       <div class="d-flex gap-0 flex-wrap">
-                        <a onclick="cambiar_estado(<?php echo $mascota['idMascota']; ?>)"
-                          class="mb-0 mt-3 w-50 btn btn-sm p-0 rounded-pill 
-   <?php if ($mascota['status'] == 'Adoptado') echo 'btn-success'; ?>
-   <?php if ($mascota['status'] == 'Perdido') echo 'btn-danger'; ?>
-   <?php if ($mascota['status'] == 'Pendiente') echo 'btn-secondary'; ?>
-   <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?> col-8">
-                          <?php echo htmlspecialchars($mascota['status']); ?>
-                        </a>
+                        <?php if ($_SESSION['rol'] === 'Administrador'): ?>
+                          <!-- Solo el administrador puede modificar el estado -->
+                          <a onclick="cambiar_estado(<?php echo $mascota['idMascota']; ?>)"
+                            class="mb-0 mt-3 w-50 btn btn-sm p-0 rounded-pill 
+     <?php if ($mascota['status'] == 'Adoptado') echo 'btn-success'; ?>
+     <?php if ($mascota['status'] == 'Perdido') echo 'btn-danger'; ?>
+     <?php if ($mascota['status'] == 'Pendiente') echo 'btn-secondary'; ?>
+     <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?> col-8">
+                            <?php echo htmlspecialchars($mascota['status']); ?>
+                          </a>
+                        <?php else: ?>
+                          <!-- Otros roles solo ven el estado como etiqueta sin acción -->
+                          <span class="mb-0 mt-3 w-50 btn btn-sm p-0 rounded-pill disabled 
+     <?php if ($mascota['status'] == 'Adoptado') echo 'btn-success'; ?>
+     <?php if ($mascota['status'] == 'Perdido') echo 'btn-danger'; ?>
+     <?php if ($mascota['status'] == 'Pendiente') echo 'btn-secondary'; ?>
+     <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?> col-8">
+                            <?php echo htmlspecialchars($mascota['status']); ?>
+                          </span>
+                        <?php endif; ?>
 
                         <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/animals/form_edit_animal.php?id=<?php echo $mascota['idMascota']; ?>"
                           class="btn btn-outline-dark w-25 ms-2 mt-3 btn-sm p-0 rounded-pill">Editar</a>

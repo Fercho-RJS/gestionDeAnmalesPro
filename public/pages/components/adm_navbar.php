@@ -24,7 +24,7 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
   }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-admin shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-admin shadow-sm d-none d-md-flex">
   <div class="container-fluid">
     <!-- Logo -->
     <a class="navbar-brand ms-3" href="<?php echo BASE_URL; ?>/index.php">
@@ -81,21 +81,20 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
         <!-- Configuración -->
         <li class="nav-item">
           <a class="nav-link <?php echo $pg_actual === 'configuracion' ? 'active' : ''; ?>"
-            href="<?php echo PUBLIC_PAGES_URL; ?>admin/pg_configuracion.php">
+            href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/pg_configuracion.php">
             <i class="bi bi-gear-fill fs-3"></i>
           </a>
         </li>
 
-        <!-- Perfil -->
+        <!-- Perfil con SweetAlert -->
         <li class="nav-item">
-          <a class="nav-link <?php echo $pg_actual === 'perfil' ? 'active' : ''; ?>"
-            href="<?php echo PUBLIC_PAGES_URL; ?>pg_perfilUsuario.php">
+          <a href="javascript:void(0);" class="nav-link <?php echo $pg_actual === 'perfil' ? 'active' : ''; ?>" onclick="abrirMenuPerfilAdmin();">
             <i class="bi bi-person-circle fs-3"></i>
           </a>
         </li>
 
-        <!-- Logout -->
-        <li class="nav-item">
+        <!-- Logout directo (opcional, ya está en el menú) -->
+        <li class="nav-item d-none d-lg-block">
           <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>logout.php" method="post"
             onsubmit="return confirmarLogout();" class="d-inline">
             <button class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
@@ -109,8 +108,45 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
   </div>
 </nav>
 
+<!-- Navbar simplificada SOLO para móviles -->
+<nav class="navbar navbar-light bg-white shadow-sm sticky-top d-flex d-md-none">
+  <div class="container-fluid justify-content-center">
+    <a class="navbar-brand fw-bold" href="<?php echo BASE_URL; ?>/index.php">
+      <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>isotipo.png" height="50" alt="Logo">
+    </a>
+  </div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   function confirmarLogout() {
     return confirm("¿Seguro que deseas cerrar sesión?");
+  }
+
+  function abrirMenuPerfilAdmin() {
+    let opciones = `
+      <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_perfilUsuario.php" class="btn btn-outline-light w-100 mb-2">
+        <i class="bi bi-person"></i> Mi perfil
+      </a>
+      <a href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/pg_adm_workspace.php" class="btn btn-outline-light w-100 mb-2">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>logout.php" method="post" onsubmit="return confirm('¿Seguro que deseas cerrar sesión?');">
+        <button type="submit" class="btn btn-outline-danger w-100">
+          <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </button>
+      </form>
+    `;
+
+    Swal.fire({
+      title: 'Opciones de administrador',
+      html: opciones,
+      showConfirmButton: false,
+      showCloseButton: true,
+      focusConfirm: false,
+      background: '#e74c3c',
+      color: '#fff',
+      width: 350
+    });
   }
 </script>

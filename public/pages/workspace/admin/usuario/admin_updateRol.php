@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $rol       = $_POST['rol'];
 
   // Validar rol permitido
-  $rolesPermitidos = ["Administrador", "Ayudante", "Veterinario", "Usuario", "Publicista"];
+  $rolesPermitidos = ["Administrador", "Ayudante", "Veterinario", "Usuario", "Publicista", "Invitado"];
   if (!in_array($rol, $rolesPermitidos)) {
     die("Rol inválido.");
   }

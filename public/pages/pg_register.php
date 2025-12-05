@@ -60,7 +60,7 @@ if (isset($_SESSION['idPersona'])) {
             <label class="form-label" for="documento">Documento N° <span class="text-danger">*</span></label>
             <div class="input-group input-group-sm">
               <input type="text" name="documento" id="documento" class="form-control" required
-                inputmode="numeric" pattern="[0-9]+" maxlength="10"
+                inputmode="numeric" pattern="[0-9]+" maxlength="12"
                 title="Ingrese solo números. Este campo es obligatorio.">
               <button type="button" class="btn btn-outline-secondary"
                 data-bs-toggle="tooltip" data-bs-placement="top"

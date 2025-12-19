@@ -97,10 +97,14 @@ $_SESSION['pgActual'] = "reportarExtraviado";
         </div>
       </form>
     </div>
-
     <?php require PUBLIC_PAGES_COMPONENTS . 'support.php'; ?>
     <?php require PUBLIC_PAGES_COMPONENTS . 'footer.php'; ?>
     <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
+    <?php
+    if ($_SESSION['rol'] === 'Usuario' || $_SESSION['rol'] === 'Invitado') {
+      include PUBLIC_PAGES_COMPONENTS . 'prohibir_inspeccionar_elemento.php';
+    }
+    ?>
   </section>
   <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
 </body>

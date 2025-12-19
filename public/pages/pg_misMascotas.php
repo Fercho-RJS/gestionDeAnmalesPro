@@ -96,7 +96,8 @@ $_SESSION['pgActual'] = "misMascotas";
      <?php if ($mascota['status'] == 'Adoptado') echo 'btn-success'; ?>
      <?php if ($mascota['status'] == 'Perdido') echo 'btn-danger'; ?>
      <?php if ($mascota['status'] == 'Pendiente') echo 'btn-secondary'; ?>
-     <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?> col-8">
+     <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?>
+     <?php if ($mascota['status'] == 'Decesó') echo 'btn-dark'; ?> col-8">
                             <?php echo htmlspecialchars($mascota['status']); ?>
                           </a>
                         <?php else: ?>
@@ -105,7 +106,8 @@ $_SESSION['pgActual'] = "misMascotas";
      <?php if ($mascota['status'] == 'Adoptado') echo 'btn-success'; ?>
      <?php if ($mascota['status'] == 'Perdido') echo 'btn-danger'; ?>
      <?php if ($mascota['status'] == 'Pendiente') echo 'btn-secondary'; ?>
-     <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?> col-8">
+     <?php if ($mascota['status'] == 'En adopción') echo 'btn-warning'; ?>
+     <?php if ($mascota['status'] == 'Decesó') echo 'btn-dark'; ?> col-8">
                             <?php echo htmlspecialchars($mascota['status']); ?>
                           </span>
                         <?php endif; ?>
@@ -165,7 +167,7 @@ $_SESSION['pgActual'] = "misMascotas";
 
   <script>
     function cambiar_estado(idMascota) {
-      const estados = ['Adoptado', 'Perdido', 'En adopción', 'Pendiente'];
+      const estados = ['Adoptado', 'Perdido', 'En adopción', 'Pendiente', 'Decesó'];
       let selectHTML = '<select id="nuevoEstado" class="form-select">';
       estados.forEach(estado => {
         selectHTML += `<option value="${estado}">${estado}</option>`;

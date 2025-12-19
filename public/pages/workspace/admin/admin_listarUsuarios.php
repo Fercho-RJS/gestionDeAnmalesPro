@@ -13,13 +13,14 @@ if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'Administrador') {
 $_SESSION['pgActual'] = "admin_listarUsuarios";
 
 // Leer usuarios de la BD
-$sql = "SELECT u.idUsuario, u.rol, u.habilitado,
-               p.nombre, p.apellido, p.email, p.dni
+$sql = "SELECT  u.idUsuario, u.rol, u.habilitado, u.photo,
+                p.nombre, p.apellido, p.email, p.dni
         FROM usuario u
         INNER JOIN persona p ON p.idPersona = u.Persona_idPersona
         ORDER BY p.apellido ASC, p.nombre ASC";
 
 $result = $conexion->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -48,6 +49,7 @@ $result = $conexion->query($sql);
         <thead class="table-dark">
           <tr>
             <th>ID</th>
+            <th>Foto</th>
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Email</th>
@@ -57,10 +59,24 @@ $result = $conexion->query($sql);
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="">
           <?php while ($row = $result->fetch_assoc()): ?>
+            <?php
+            $rutaDefault = PUBLIC_RESOURCES_URL . "user_profiles/defaultuser.png";
+            $fotoPerfil  = $row['photo'] ?? '';
+            // Validar ruta
+            $mostrarFoto = (!empty($fotoPerfil) && file_exists($_SERVER['DOCUMENT_ROOT'] . parse_url($fotoPerfil, PHP_URL_PATH)))
+              ? $fotoPerfil
+              : $rutaDefault;
+            ?>
             <tr>
               <td><?php echo $row['idUsuario']; ?></td>
+              <td>
+                <img src="<?php echo $mostrarFoto; ?>"
+                  alt="Foto de perfil"
+                  class="rounded-circle"
+                  style="width: 50px !important; height: 50px !important; object-fit: cover; border: 2px solid #dee2e6; ">
+              </td>
               <td><?php echo htmlspecialchars($row['nombre']); ?></td>
               <td><?php echo htmlspecialchars($row['apellido']); ?></td>
               <td><?php echo htmlspecialchars($row['email']); ?></td>

@@ -121,44 +121,44 @@ $_SESSION['pgActual'] = "animalesPerdidos";
                     <?php else: ?>
                       <span class="btn btn-sm btn-secondary"><?php echo $status; ?></span>
                     <?php endif; ?>
-                    
+
                     <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_reportarEncuentro.php?id=<?php echo (int)$mascota['idMascota']; ?>"
                       class="btn btn-sm btn-outline-danger">S.O.S</a>
                   </div>
                 </div>
-                </div>
               </div>
-
-            <?php endwhile; ?>
             </div>
 
-            <!-- Paginación -->
-            <nav aria-label="Paginación de mascotas perdidas" class="mt-4">
-              <ul class="pagination justify-content-center">
-                <?php if ($pagina > 1): ?>
-                  <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">Anterior</a></li>
-                <?php else: ?>
-                  <li class="page-item disabled"><span class="page-link">Anterior</span></li>
-                <?php endif; ?>
+          <?php endwhile; ?>
+        </div>
 
-                <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-                  <li class="page-item <?php if ($i == $pagina) echo 'active'; ?>">
-                    <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
-                  </li>
-                <?php endfor; ?>
+        <!-- Paginación -->
+        <nav aria-label="Paginación de mascotas perdidas" class="mt-4">
+          <ul class="pagination justify-content-center">
+            <?php if ($pagina > 1): ?>
+              <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">Anterior</a></li>
+            <?php else: ?>
+              <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+            <?php endif; ?>
 
-                <?php if ($pagina < $totalPaginas): ?>
-                  <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">Siguiente</a></li>
-                <?php else: ?>
-                  <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
-                <?php endif; ?>
-              </ul>
-            </nav>
-          <?php else: ?>
-            <div class="alert alert-dark" role="alert">
-              No hay mascotas registradas como perdidas.
-            </div>
-          <?php endif; ?>
+            <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+              <li class="page-item <?php if ($i == $pagina) echo 'active'; ?>">
+                <a class="page-link" href="?pagina=<?php echo $i; ?>"><?php echo $i; ?></a>
+              </li>
+            <?php endfor; ?>
+
+            <?php if ($pagina < $totalPaginas): ?>
+              <li class="page-item"><a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">Siguiente</a></li>
+            <?php else: ?>
+              <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+            <?php endif; ?>
+          </ul>
+        </nav>
+      <?php else: ?>
+        <div class="alert alert-dark" role="alert">
+          No hay mascotas registradas como perdidas.
+        </div>
+      <?php endif; ?>
     </section>
 
     <?php
@@ -168,6 +168,11 @@ $_SESSION['pgActual'] = "animalesPerdidos";
     <?php require PUBLIC_PAGES_COMPONENTS . 'src-scripts.php'; ?>
   </section>
   <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
+  <?php
+  if ($_SESSION['rol'] === 'Usuario' || $_SESSION['rol'] === 'Invitado') {
+    include PUBLIC_PAGES_COMPONENTS . 'prohibir_inspeccionar_elemento.php';
+  }
+  ?>
 </body>
 
 </html>

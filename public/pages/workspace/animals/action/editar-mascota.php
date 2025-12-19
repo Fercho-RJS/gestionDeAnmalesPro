@@ -63,11 +63,11 @@ try {
     if ($rutaBD) {
         $sql = "UPDATE mascota SET nombre = ?, categoria = ?, raza = ?, edad = ?, color = ?, height = ?, imagen = ? WHERE idMascota = ?";
         $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("sssiissi", $nombre, $categoria, $raza, $edad, $color, $height, $rutaBD, $idMascota);
+        $stmt->bind_param("sssisssi", $nombre, $categoria, $raza, $edad, $color, $height, $rutaBD, $idMascota);
     } else {
         $sql = "UPDATE mascota SET nombre = ?, categoria = ?, raza = ?, edad = ?, color = ?, height = ? WHERE idMascota = ?";
         $stmt = $conexion->prepare($sql);
-        $stmt->bind_param("sssiisi", $nombre, $categoria, $raza, $edad, $color, $height, $idMascota);
+        $stmt->bind_param("sssissi", $nombre, $categoria, $raza, $edad, $color, $height, $idMascota);
     }
 
     if ($stmt === false) {

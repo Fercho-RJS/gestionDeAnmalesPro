@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/routing.php';
 session_start();
+$result_op = isset($_GET['m']) || isset($_GET['error']);
 $_SESSION['pgActual'] = "perfil";
 ?>
 <!DOCTYPE html>
@@ -28,6 +29,41 @@ $_SESSION['pgActual'] = "perfil";
         <div class="col-lg-8">
           <div class="card shadow-sm border-0">
             <div class="card-body">
+              <?php if ($result_op): ?>
+                <div class="container mb-3">
+                  <?php if (!empty($_GET['m']) && $_GET['m'] === 'perfil_actualizado'): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <i class="bi bi-check-circle me-2"></i>
+                      ¡Perfil actualizado correctamente!
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                  <?php elseif (!empty($_GET['m']) && $_GET['m'] === 'password_actualizada'): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <i class="bi bi-key me-2"></i>
+                      ¡Contraseña cambiada con éxito!
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                  <?php elseif (!empty($_GET['error']) && $_GET['error'] === 'faltan_datos'): ?>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                      <i class="bi bi-exclamation-triangle me-2"></i>
+                      Faltan completar algunos campos obligatorios.
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                  <?php elseif (!empty($_GET['error']) && $_GET['error'] === 'password_actual_incorrecta'): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <i class="bi bi-x-circle me-2"></i>
+                      La contraseña actual no es correcta.
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                  <?php elseif (!empty($_GET['error']) && $_GET['error'] === 'confirmacion_incorrecta'): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <i class="bi bi-x-circle me-2"></i>
+                      La confirmación de la nueva contraseña no coincide.
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+                    </div>
+                  <?php endif; ?>
+                </div>
+              <?php endif; ?>
               <div class="d-flex justify-content-between align-items-center">
                 <h2 class="fw-bold mb-0">
                   <?php echo strtoupper($_SESSION['dni_persona']); ?>
@@ -69,7 +105,10 @@ $_SESSION['pgActual'] = "perfil";
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                       </div>
                       <div class="modal-body">
-                        <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>usuario/actualizar_perfil.php" method="post" class="row g-3 needs-validation" novalidate>
+                        <form action="<?php echo PUBLIC_PAGES_URL; ?>workspace/usuario/forms/actualizar_perfil.php"
+                          method="post"
+                          enctype="multipart/form-data"
+                          class="row g-3 needs-validation" novalidate>
 
                           <div class="col-md-6">
                             <label for="dni" class="form-label fw-bold">DNI</label>
@@ -106,12 +145,19 @@ $_SESSION['pgActual'] = "perfil";
                             <input type="text" class="form-control" id="calleAltura" name="calleAltura" value="<?php echo $_SESSION['calleAltura']; ?>">
                           </div>
 
+                          <!-- Nuevo campo: Foto de perfil -->
+                          <div class="col-md-6">
+                            <label for="fotoPerfil" class="form-label fw-bold">Foto de perfil</label>
+                            <input type="file" class="form-control" id="fotoPerfil" name="fotoPerfil" accept="image/*">
+                          </div>
+
                           <div class="col-12 text-center mt-4">
                             <button type="submit" class="btn btn-success rounded-pill px-5">
                               <i class="bi bi-check-circle me-2"></i> Guardar cambios
                             </button>
                           </div>
                         </form>
+
                       </div>
                     </div>
                   </div>
@@ -119,7 +165,6 @@ $_SESSION['pgActual'] = "perfil";
 
               </div>
               <hr>
-
               <!-- Invitado -->
               <?php if ($_SESSION['rol'] == 'Invitado') { ?>
                 <div class="alert alert-warning mt-4" role="alert">
@@ -131,12 +176,23 @@ $_SESSION['pgActual'] = "perfil";
                 <h4 class="mt-3">Información del Usuario</h4>
                 <ul class="list-group list-group-flush mt-3">
                   <!-- Foto de perfil -->
+                  <?php
+                  $fotoPerfil = $_SESSION['fotoPerfil'] ?? '';
+                  $rutaDefault = PUBLIC_RESOURCES_URL . "user_profiles/defaultuser.png";
+
+                  // Validar que la ruta exista y no esté vacía
+                  $mostrarFoto = ($fotoPerfil && file_exists($_SERVER['DOCUMENT_ROOT'] . parse_url($fotoPerfil, PHP_URL_PATH)))
+                    ? $fotoPerfil
+                    : $rutaDefault;
+                  ?>
+
                   <div class="text-center mb-4">
-                    <img src="https://i.imgur.com/8Km9tLL.png"
+                    <img src="<?php echo $mostrarFoto; ?>"
                       alt="Foto de perfil"
                       class="rounded-circle shadow-sm"
                       style="width: 220px; height: 220px; object-fit: cover; border: 4px solid #dee2e6;">
                   </div>
+
 
                   <li class="list-group-item">
                     <i class="bi bi-credit-card-2-front me-2"></i>
@@ -172,12 +228,53 @@ $_SESSION['pgActual'] = "perfil";
               <?php } ?>
 
               <!-- Botón cambiar contraseña -->
-              <div class="mt-3 text-center">
-                <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_cambiarPassword.php"
-                  class="btn btn-link text-decoration-none">
-                  <i class="bi bi-key me-2"></i> Cambiar contraseña
-                </a>
+              <?php
+              if (!($_SESSION['rol'] === 'Invitado')) {
+              ?>
+                <div class="mt-3 text-center">
+                  <button class="btn btn-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#modalCambiarPassword">
+                    <i class="bi bi-key me-2"></i> Cambiar contraseña
+                  </button>
+                </div>
+              <?php
+              }
+              ?>
+
+              <!-- Modal Cambiar Contraseña -->
+              <div class="modal fade" id="modalCambiarPassword" tabindex="-1" aria-labelledby="modalCambiarPasswordLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content rounded-4">
+                    <div class="modal-header bg-dark text-white">
+                      <h5 class="modal-title fw-bold" id="modalCambiarPasswordLabel">
+                        <i class="bi bi-key me-2"></i> Cambiar Contraseña
+                      </h5>
+                      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="<?php echo PUBLIC_PHP_FUNCTIONS_URL; ?>cambiar_password.php" method="post" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                          <label for="passwordActual" class="form-label fw-bold">Contraseña actual</label>
+                          <input type="password" class="form-control" id="passwordActual" name="passwordActual" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="passwordNueva" class="form-label fw-bold">Nueva contraseña</label>
+                          <input type="password" class="form-control" id="passwordNueva" name="passwordNueva" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="passwordConfirmar" class="form-label fw-bold">Confirmar nueva contraseña</label>
+                          <input type="password" class="form-control" id="passwordConfirmar" name="passwordConfirmar" required>
+                        </div>
+                        <div class="text-center mt-4">
+                          <button type="submit" class="btn btn-success rounded-pill px-4">
+                            <i class="bi bi-check-circle me-2"></i> Guardar cambios
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>

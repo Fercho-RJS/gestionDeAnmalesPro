@@ -113,4 +113,9 @@ $_SESSION['pgActual'] = "mascotasAdopcion";
   </section>
   <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
 </body>
+<?php
+    if ($_SESSION['rol'] === 'Usuario' || $_SESSION['rol'] === 'Invitado') {
+      include PUBLIC_PAGES_COMPONENTS . 'prohibir_inspeccionar_elemento.php';
+    }
+    ?>
 </html>

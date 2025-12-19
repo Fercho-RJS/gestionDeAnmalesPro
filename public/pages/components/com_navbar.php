@@ -71,7 +71,7 @@ $pg_actual = $_SESSION['pgActual'];
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_eventos.php"><i class="bi bi-calendar-event"></i> Eventos</a></li>
-              <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_noticias.php"><i class="bi bi-newspaper"></i> Noticias</a></li>
+              <li><a class="dropdown-item disabled" href="<?php echo PUBLIC_PAGES_URL; ?>pg_noticias.php"><i class="bi bi-newspaper"></i> Noticias</a></li>
             </ul>
           </li>
         <?php endif; ?>
@@ -107,7 +107,7 @@ $pg_actual = $_SESSION['pgActual'];
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_vacunasMascota.php"><i class="bi bi-capsule"></i> Vacunaciones</a></li>
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_turnosVeterinario.php"><i class="bi bi-calendar-check"></i> Asistencia</a></li>
-            <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_historialMedico.php"><i class="bi bi-file-medical"></i> Historial médico</a></li>
+            <li><a class="dropdown-item disabled" href="<?php echo PUBLIC_PAGES_URL; ?>pg_historialMedico.php"><i class="bi bi-file-medical"></i> Historial médico</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="<?php echo PUBLIC_PAGES_URL; ?>pg_veterinarios.php"><i class="bi bi-hospital"></i> Veterinarios</a></li>
           </ul>

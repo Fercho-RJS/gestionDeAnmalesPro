@@ -104,7 +104,11 @@ session_start();
       </div>
     </div>
   </section>
-
+  <?php
+  if ($_SESSION['rol'] == 'Usuario' || $_SESSION['rol'] == 'Invitado') {
+    require PUBLIC_PAGES_COMPONENTS . 'prohibir_inspeccionar_elemento.php';
+  }
+  ?>
   <?php require PUBLIC_PAGES_COMPONENTS . 'support.php'; ?>
   <?php require PUBLIC_PAGES_COMPONENTS . 'footer.php'; ?>
 

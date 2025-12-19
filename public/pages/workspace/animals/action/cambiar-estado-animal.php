@@ -12,7 +12,7 @@ if (!isset($_SESSION['rol']) || !isset($_SESSION['idUsuario'])) {
 
 $idMascota   = isset($_GET['idMascota']) ? (int)$_GET['idMascota'] : 0;
 $nuevoEstado = $_GET['nuevoEstado'] ?? '';
-$estadosPermitidos = ['Adoptado', 'Perdido', 'En adopción', 'Pendiente'];
+$estadosPermitidos = ['Adoptado', 'Perdido', 'En adopción', 'Pendiente', 'Decesó'];
 
 if ($idMascota <= 0 || !in_array($nuevoEstado, $estadosPermitidos, true)) {
   header("Location: " . PUBLIC_PAGES_URL . "pg_misMascotas.php?m=402");
@@ -159,6 +159,20 @@ try {
     $insertPendiente->close();
   }
 
+  // Si es Decesó (Q.E.P.D.)
+  if ($nuevoEstado === 'Decesó') {
+    // Eliminar cualquier registro en perdidos
+    $deletePerdido = $conexion->prepare("DELETE FROM perdidos WHERE Mascota_idMascota = ?");
+    $deletePerdido->bind_param("i", $idMascota);
+    $deletePerdido->execute();
+    $deletePerdido->close();
+
+    // Eliminar cualquier registro en adopciones
+    $deleteAdopcion = $conexion->prepare("DELETE FROM adopciones WHERE Mascota_idMascota = ?");
+    $deleteAdopcion->bind_param("i", $idMascota);
+    $deleteAdopcion->execute();
+    $deleteAdopcion->close();
+  }
 
   $conexion->commit();
   header("Location: " . PUBLIC_PAGES_URL . "pg_misMascotas.php?m=201");

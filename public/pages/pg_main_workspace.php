@@ -36,6 +36,17 @@ $_SESSION['pgActual'] = "inicio";
       font-size: 0.9rem;
       padding: 0.4em 0.6em;
     }
+
+    .modal-header-custom {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    #modalEventoImagen {
+      max-height: 300px;
+      object-fit: cover;
+      width: 100%;
+    }
   </style>
 </head>
 
@@ -68,6 +79,7 @@ $_SESSION['pgActual'] = "inicio";
         <?php if ($resEventos && $resEventos->num_rows > 0): ?>
           <?php while ($ev = $resEventos->fetch_assoc()): ?>
             <?php
+            $idEvento    = (int)($ev['idEventos'] ?? 0);
             $titulo      = htmlspecialchars($ev['titulo'] ?? '', ENT_QUOTES, 'UTF-8');
             $descripcion = htmlspecialchars($ev['descripcion'] ?? '', ENT_QUOTES, 'UTF-8');
             $fechaInicio = htmlspecialchars($ev['fecha_inicio'] ?? '', ENT_QUOTES, 'UTF-8');
@@ -76,6 +88,17 @@ $_SESSION['pgActual'] = "inicio";
             $estado      = htmlspecialchars($ev['estado'] ?? '', ENT_QUOTES, 'UTF-8');
             $imagen      = !empty($ev['imagen_portada']) ? htmlspecialchars($ev['imagen_portada'], ENT_QUOTES, 'UTF-8')
               : PUBLIC_RESOURCES_IMAGES_URL . "evento_default.jpg";
+
+            // Truncar descripción a 100 caracteres
+            $descripcionCorta = $descripcion;
+            if (mb_strlen($descripcion) > 100) {
+              $descripcionCorta = mb_substr($descripcion, 0, 100) . '...';
+            }
+
+            // Escapar para JavaScript
+            $tituloJS = str_replace("'", "\\'", $titulo);
+            $descripcionJS = str_replace("'", "\\'", $descripcion);
+            $imagenJS = str_replace("'", "\\'", $imagen);
             ?>
             <div class="col-md-4">
               <div class="card shadow-sm h-100">
@@ -90,10 +113,34 @@ $_SESSION['pgActual'] = "inicio";
                       <b>Hora:</b> <?php echo $horaInicio; ?><br>
                     <?php endif; ?>
                   </p>
-                  <p class="card-text"><?php echo $descripcion ?: 'Sin descripción'; ?></p>
-                  <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_eventos.php" class="btn btn-outline-primary w-100 rounded-pill">
-                    <i class="bi bi-info-circle"></i> Más información
-                  </a>
+                  <p class="card-text"><?php echo $descripcionCorta ?: 'Sin descripción'; ?></p>
+
+                  <?php if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'Usuario' 
+                                                    || $_SESSION['rol'] === 'Invitado'
+                                                    || $_SESSION['rol'] === 'Veterinario'): ?>
+                    <?php
+                    $eventoJS = json_encode([
+                      'titulo' => $titulo,
+                      'descripcion' => $descripcion,
+                      'fechaInicio' => $fechaInicio,
+                      'fechaFin' => $fechaFin,
+                      'horaInicio' => $horaInicio,
+                      'estado' => $estado,
+                      'imagen' => $imagen
+                    ], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
+                    ?>
+
+                    <button
+                      class="btn btn-outline-primary w-100 rounded-pill"
+                      onclick='mostrarModalEvento(<?php echo $eventoJS; ?>)'>
+                      <i class="bi bi-info-circle"></i> Más información
+                    </button>
+
+                  <?php else: ?>
+                    <a href="<?php echo PUBLIC_PAGES_URL; ?>pg_eventos.php" class="btn btn-outline-primary w-100 rounded-pill">
+                      <i class="bi bi-info-circle"></i> Más información
+                    </a>
+                  <?php endif; ?>
                 </div>
               </div>
             </div>
@@ -167,6 +214,81 @@ $_SESSION['pgActual'] = "inicio";
   </section>
 
   <?php require PUBLIC_PAGES_COMPONENTS . 'com-phone-navbar.php'; ?>
+
+  <!-- Modal de Evento -->
+  <div class="modal fade" id="modalEvento" tabindex="-1" aria-labelledby="modalEventoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title" id="modalEventoLabel">
+            <i class="bi bi-calendar-event"></i> <span id="modalEventoTitulo"></span>
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img id="modalEventoImagen" src="" alt="Imagen del evento" class="mb-3 rounded">
+
+          <div class="mb-3">
+            <span class="badge bg-secondary badge-custom" id="modalEventoEstado"></span>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="mb-2">
+                <i class="bi bi-calendar-check text-success"></i>
+                <strong> Fecha de inicio:</strong><br>
+                <span id="modalEventoFechaInicio" class="ms-4"></span>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-2">
+                <i class="bi bi-calendar-x text-danger"></i>
+                <strong> Fecha de fin:</strong><br>
+                <span id="modalEventoFechaFin" class="ms-4"></span>
+              </p>
+            </div>
+          </div>
+
+          <p class="mb-3" id="modalEventoHoraContainer" style="display: none;">
+            <i class="bi bi-clock text-primary"></i>
+            <strong> Hora:</strong>
+            <span id="modalEventoHora" class="ms-2"></span>
+          </p>
+
+          <hr>
+
+          <h6 class="fw-bold mb-2">Descripción:</h6>
+          <p id="modalEventoDescripcion" class="text-justify"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle"></i> Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function mostrarModalEvento(evento) {
+      document.getElementById('modalEventoTitulo').textContent = evento.titulo;
+      document.getElementById('modalEventoDescripcion').textContent = evento.descripcion || 'Sin descripción';
+      document.getElementById('modalEventoFechaInicio').textContent = evento.fechaInicio;
+      document.getElementById('modalEventoFechaFin').textContent = evento.fechaFin;
+      document.getElementById('modalEventoEstado').textContent = evento.estado;
+      document.getElementById('modalEventoImagen').src = evento.imagen;
+
+      if (evento.horaInicio && evento.horaInicio.trim() !== '') {
+        document.getElementById('modalEventoHora').textContent = evento.horaInicio;
+        document.getElementById('modalEventoHoraContainer').style.display = 'block';
+      } else {
+        document.getElementById('modalEventoHoraContainer').style.display = 'none';
+      }
+
+      new bootstrap.Modal(document.getElementById('modalEvento')).show();
+    }
+  </script>
+
 </body>
 
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-12-2025 a las 15:42:54
+-- Tiempo de generación: 19-12-2025 a las 19:03:28
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 7.2.34
 
@@ -41,7 +41,7 @@ CREATE TABLE `adopciones` (
 --
 
 INSERT INTO `adopciones` (`idAdopciones`, `Usuario_idUsuario`, `Mascota_idMascota`, `fecha_adopcion`, `estado`, `observacionesl`) VALUES
-(9, 113, 27, '2025-12-04', 'Vigente', NULL);
+(11, 113, NULL, '2025-12-19', 'Vigente', NULL);
 
 -- --------------------------------------------------------
 
@@ -82,7 +82,8 @@ CREATE TABLE `eventos` (
 --
 
 INSERT INTO `eventos` (`idEventos`, `Usuario_idUsuario`, `titulo`, `fecha_inicio`, `fecha_fin`, `hora_inicio`, `descripcion`, `estado`, `imagen_portada`) VALUES
-(1, 113, 'Prueba', '2025-12-04', '2025-12-24', '12:22:00', 'Hola mundo', 'Pendiente', '/public/res/eventos/evento-1764896802-gatos-blanco-negro.jpg');
+(2, 117, 'Campaña de vacunación antirrábica', '2025-12-22', '2025-12-26', '16:30:00', 'Jornada de Vacunación Antirrábica Gratuita\r\nTe invitamos a participar en nuestra campaña de vacunación antirrábica para proteger a tu mascota y a toda la comunidad. La rabia es una enfermedad mortal pero prevenible, y la vacunación es la mejor herramienta para mantener a salvo a nuestros compañeros de cuatro patas.\r\n¿Qué ofrecemos?\r\n\r\nVacunación antirrábica gratuita para perros y gatos\r\nCertificado oficial de vacunación\r\nAtención por personal veterinario calificado\r\nAsesoría sobre cuidados preventivos\r\n\r\nRequisitos:\r\n\r\nMascotas mayores de 3 meses de edad\r\nEn buen estado de salud general\r\nLlevar collar o correa para perros\r\nTransportadora para gatos\r\n\r\nProtege a tu mascota, protege a tu familia. La prevención es responsabilidad de todos. ¡Te esperamos!', 'Pendiente', '/public/res/eventos/evento-1766155445-486365429_1073499794819292_4530396173837108762_n.jpg'),
+(3, 117, 'Sorteo de Hallowen \"Disfraz para tu mascota\"', '2025-10-23', '2025-10-25', '17:00:00', '¡CONCURSO DE DISFRACES DE HALLOWEEN 2021!\r\n¡PARTICIPA Y GANA!\r\n\r\nEn Veterinaria San Cristobal queremos divertirnos contigo y tu mascota, por eso te invitamos a participar en nuestro concurso de disfraces este mes de octubre 2021. Participa a partir de hoy 29 de octubre hasta el 01 de noviembre 2021.\r\n\r\nInstrucciones para participar:\r\n1. SÍGUENOS en Facebook como https://www.facebook.com/veterinariasancristobal\r\n2. En esta publicación sube tu foto para que podamos ver el disfraz de tu mascota.\r\n\r\nCategorías:\r\n* A. Fotografía solo de tu mascota disfrazada\r\n* B. Fotografía de toda la familia y su mascota todos disfrazados\r\n\r\nPREMIACIÓN:\r\nLos premios se darán a conocer el 02 de noviembre cuando se anuncie a los ganadores de cada categoría. Habrá solo 1 ganador por cada categoría.\r\n\r\n*A todos los participantes se les regalará una galletita para su mascota.\r\n\r\nVigencia de participación: del 29 de octubre al 01 de noviembre 2021.', 'Finalizado', '/public/res/eventos/evento-1766160220-480230934_9274016922719035_7454815229853208226_n.jpg');
 
 -- --------------------------------------------------------
 
@@ -105,47 +106,10 @@ CREATE TABLE `log_acciones` (
 --
 
 INSERT INTO `log_acciones` (`idLog`, `usuario_id`, `rol`, `accion`, `ip_origen`, `user_agent`, `fecha`) VALUES
-(1, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '200.0.215.36', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-16 21:20:01'),
-(2, 106, 'Veterinario', 'Ha iniciado sesión David Rojas con el DNI: 44495699', '200.0.215.36', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-16 21:23:04'),
-(3, 108, 'Usuario', 'Ha iniciado sesión Valentín  Giovannini  con el DNI: 42533896', '181.189.214.35', 'Mozilla/5.0 (Linux; Android 14; 23100RN82L Build/UP1A.231005.007; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/141.0.7390.122 Mobile Safari/537.36 Instagram 406.0.0.58.159 Android (34/14; 320dpi; 720x1438; Xiaomi/Redmi; 23100RN82L; gale; mt6768; es_US; 822918295; IABMV/1)', '2025-11-16 21:45:17'),
-(4, 106, 'Administrador', 'Ha iniciado sesión David Rojas con el DNI: 44495699', '200.0.215.36', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-16 22:15:21'),
-(5, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '190.182.160.132', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-11-18 23:55:56'),
-(6, 106, 'Administrador', 'Ha iniciado sesión David Rojas con el DNI: 44495699', '190.182.160.132', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-11-18 23:56:23'),
-(7, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '200.0.215.47', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-19 13:48:36'),
-(8, 106, 'Administrador', 'Ha iniciado sesión David Rojas con el DNI: 44495699', '200.0.215.125', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-21 19:28:07'),
-(9, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '190.182.160.127', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0', '2025-11-25 19:09:28'),
-(10, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '185.40.4.143', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-25 19:15:42'),
-(11, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '200.0.215.39', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-25 19:26:21'),
-(12, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '200.0.215.39', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-25 19:34:42'),
-(13, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '181.9.213.102', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-11-25 20:15:05'),
-(14, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '181.9.213.102', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-11-25 20:16:20'),
-(15, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '201.217.246.228', 'Mozilla/5.0 (Linux; Android 14; Pixel 6 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.119 Mobile Safari/537.36 OPR/81.2.4292.78581', '2025-11-25 20:16:27'),
-(16, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '186.126.46.152', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-25 20:16:51'),
-(17, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '181.9.213.102', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-11-25 20:31:46'),
-(18, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '186.126.46.152', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36', '2025-11-25 20:35:16'),
-(19, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '181.9.213.102', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-11-25 20:42:50'),
-(20, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 13:19:29'),
-(21, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 18:33:49'),
-(22, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 18:48:58'),
-(23, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '192.168.100.71', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-12-04 18:56:53'),
-(24, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '192.168.100.71', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-12-04 20:02:57'),
-(25, 105, 'Administrador', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 21:17:29'),
-(26, 105, 'Usuario', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 21:17:40'),
-(27, 105, 'Usuario', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 21:20:20'),
-(28, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 21:28:20'),
-(29, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 21:57:37'),
-(30, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 22:04:47'),
-(31, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 22:40:34'),
-(32, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-04 22:43:08'),
-(33, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 00:57:33'),
-(34, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 01:08:14'),
-(35, NULL, NULL, 'Se ha registrado un nuevo usuario.', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 01:12:34'),
-(36, NULL, NULL, 'Se ha registrado un nuevo usuario.', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 01:13:31'),
-(37, NULL, NULL, 'Se ha registrado un nuevo usuario.', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 01:14:34'),
-(38, NULL, NULL, 'Se ha registrado un nuevo usuario.', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 01:22:35'),
-(39, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '192.168.100.71', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36', '2025-12-05 01:45:15'),
-(40, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 02:24:06'),
-(41, 105, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: 105)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-05 02:24:23');
+(57, NULL, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: N/A)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-19 16:47:44'),
+(56, NULL, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: N/A)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-19 16:47:31'),
+(55, NULL, 'Invitado', 'Ha iniciado sesión como invitado (usuario ID: N/A)', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-19 16:40:30'),
+(54, 113, 'Administrador', 'Usuario editó perfil', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-19 16:38:45');
 
 -- --------------------------------------------------------
 
@@ -172,8 +136,7 @@ CREATE TABLE `mascota` (
 --
 
 INSERT INTO `mascota` (`idMascota`, `Usuario_idUsuario`, `nombre`, `categoria`, `raza`, `edad`, `color`, `height`, `imagen`, `chipNro`, `status`) VALUES
-(20, 111, 'aramis', 'perro', 'border', 0, 'blanco y negro', 'grande', '/public/res/animal_profiles/photo-1764103738-dev2.png', '2d5f825583', 'Adoptado'),
-(27, 113, 'Junny', 'Gato', 'Mestizo', 4, 'Naranja, Marrón, Blanco, Gris', 'Pequeño', '/public/res/animal_profiles/encuentro-1764902483-Imagen_de_WhatsApp_2025-12-04_a_las_19.07.02_0cf98a33.jpg', 'a1984a4dfb', 'Adoptado');
+(20, 111, 'aramis', 'perro', 'border', 0, 'blanco y negro', 'grande', '/public/res/animal_profiles/photo-1764103738-dev2.png', '2d5f825583', 'Adoptado');
 
 -- --------------------------------------------------------
 
@@ -235,11 +198,11 @@ INSERT INTO `persona` (`idPersona`, `nombre`, `apellido`, `dni`, `email`, `telef
 (110, 'Marisol', 'Vilches', 'maarchilve', 'maarchilves@gmail.com', 'maarchilves@gmail.com', 'Palermo', 'La paz', 686, '', 0, 'San Cristóbal ', 'Santa Fe'),
 (111, 'Ana', 'Lagos', '32840911', 'analagos@gmail.com', '3408480921', 'Rivadavia', 'Derqui', 1742, 'San C', 0, 'San Cristóbal', 'Santa Fe'),
 (112, 'neldo', 'croissant', '23', 'nlcroiss@gmail.com', '3408682511', 'Belgrano', 'salta', 1051, '', 0, 'san cristobal', 'santa fe'),
-(114, 'David', 'Rojas', '44495699', 'sanfix.informatica@gmail.com', '+54 9 3408 435682', 'Juan XXIII', 'Oroño', 1023, '', 0, 'San Cristobal', 'Santa Fe'),
-(115, 'Veterinaria', '\"El Doctor Perruno\"', '2534543454', 'veterinario@gmail.com', '+54 9 3408 123456', 'Sargento Bustamante', 'Urquiza', 1100, 'A', 2, 'San Cristobal', 'Santa Fe'),
-(116, 'Administrador', 'del Sistema', '3213123123', 'admin@gmail.com', '+54 9 3408 876543', 'Juan XXIII', 'Oroño', 2321, '', 0, 'San Cristobal', 'Santa Fe'),
-(117, 'Ayudante', 'del Sistema', '3321231231', 'gerente@gmail.com', '+54 9 3408 415374', 'Juan Caparroz', 'Caseros', 1280, 'A', 0, 'San Cristobal', 'Santa Fe'),
-(118, 'El', 'Departamental', '1234567851', 'publicidad@gmail.com', '+54 9 3408 123214', 'Jose Dho', 'H. Yrigoyen', 544, '', 0, 'San Cristobal', 'Santa Fe');
+(114, 'David', 'Rojas', '10000000', 'sanfix.informatica@gmail.com', '+54 9 3408 435682', 'Juan XXIII', 'Oroño', 1023, '', 0, 'San Cristobal', 'Santa Fe'),
+(115, 'Veterinaria', 'La Herradura', '25345434', 'veterinario@gmail.com', '+54 9 3408 123456', 'Sargento Bustamante', 'Urquiza', 1100, 'A', 2, 'San Cristobal', 'Santa Fe'),
+(116, 'Administrador', 'del Sistema', '32131231', 'admin@gmail.com', '+54 9 3408 876543', 'Juan XXIII', 'Oroño', 2321, '', 0, 'San Cristobal', 'Santa Fe'),
+(117, 'Ayudante', 'del Sistema', '33212312', 'gerente@gmail.com', '+54 9 3408 415374', 'Juan Caparroz', 'Caseros', 1280, 'A', 0, 'San Cristobal', 'Santa Fe'),
+(118, 'El', 'Departamental', '12345678', 'publicidad@gmail.com', '+54 9 3408 123214', 'Jose Dho', 'H. Yrigoyen', 544, '', 0, 'San Cristobal', 'Santa Fe');
 
 -- --------------------------------------------------------
 
@@ -253,24 +216,25 @@ CREATE TABLE `usuario` (
   `rol` enum('Administrador','Ayudante','Publicista','Veterinario','Usuario','Invitado') COLLATE utf8_bin NOT NULL,
   `password` varchar(80) COLLATE utf8_bin NOT NULL,
   `fecha_alta` date DEFAULT current_timestamp(),
-  `habilitado` tinyint(4) NOT NULL DEFAULT 1
+  `habilitado` tinyint(4) NOT NULL DEFAULT 1,
+  `photo` varchar(255) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`idUsuario`, `Persona_idPersona`, `rol`, `password`, `fecha_alta`, `habilitado`) VALUES
-(105, 106, 'Invitado', '', '2025-11-15', 1),
-(108, 109, 'Usuario', '$2y$10$XYpGMIM3Vw6UM970npR9N.ymARged.RPNbQqB7YggwXfkJDuHGL6W', '2025-11-15', 1),
-(109, 110, 'Usuario', '$2y$10$Nv7NtsTuITll3MhJx6MQOuirKjI3iWjUI8IF/6OKyTgG6J3XDXlxi', '2025-11-15', 1),
-(110, 111, 'Usuario', '$2y$10$oueAVklZqoitGePdyxABceXRzA8gm3JkAEGsfMqDtEqO9CCt/fnmO', '2025-11-25', 1),
-(111, 112, 'Usuario', '$2y$10$Ojrqu3cV6QJGv7H8Ay4JRuyvwcaWbp6bjsXjRR1SeaQMjRA7ULyRa', '2025-11-25', 1),
-(113, 114, 'Administrador', '$2y$10$FC3Rnd9P9vqbEIVrTk0nK.eB/7TqKKRbOXHLYqaerzlFuUt1gRxWi', '2025-12-04', 1),
-(114, 115, 'Veterinario', '$2y$10$2syh1DX9BIpIfxEdClRqMeIrlT70.Ss92LZu5O/uRyJR8eHc5XM2m', '2025-12-04', 1),
-(115, 116, 'Administrador', '$2y$10$FiWOwAfA2okMDvOoYeUHo.z6yLPYzcPRa9VGM1S/X4Jjq1xoCB07W', '2025-12-04', 1),
-(116, 117, 'Ayudante', '$2y$10$zNxV1KgU0ynSdAr5KPE3DO9xvXQgu/G7aDdPlxKSG75p6JG.W64VK', '2025-12-04', 1),
-(117, 118, 'Publicista', '$2y$10$1wnnugJyoeA7g66sLtRcX.SxonD54RaPubFvCsEhpSoZKvqVSn472', '2025-12-04', 1);
+INSERT INTO `usuario` (`idUsuario`, `Persona_idPersona`, `rol`, `password`, `fecha_alta`, `habilitado`, `photo`) VALUES
+(105, 106, 'Invitado', '', '2025-11-15', 1, NULL),
+(108, 109, 'Usuario', '$2y$10$XYpGMIM3Vw6UM970npR9N.ymARged.RPNbQqB7YggwXfkJDuHGL6W', '2025-11-15', 1, NULL),
+(109, 110, 'Usuario', '$2y$10$Nv7NtsTuITll3MhJx6MQOuirKjI3iWjUI8IF/6OKyTgG6J3XDXlxi', '2025-11-15', 1, NULL),
+(110, 111, 'Usuario', '$2y$10$oueAVklZqoitGePdyxABceXRzA8gm3JkAEGsfMqDtEqO9CCt/fnmO', '2025-11-25', 1, NULL),
+(111, 112, 'Usuario', '$2y$10$Ojrqu3cV6QJGv7H8Ay4JRuyvwcaWbp6bjsXjRR1SeaQMjRA7ULyRa', '2025-11-25', 1, NULL),
+(113, 114, 'Administrador', '$2y$10$pnsLrIFr5yia41PuM6NoleMKiZDZMViN5j2ERHFGpCR48daDMqLsK', '2025-12-04', 0, '/public/res/user_profiles/user-113-1766159732-Profile.png'),
+(114, 115, 'Veterinario', '$2y$10$2syh1DX9BIpIfxEdClRqMeIrlT70.Ss92LZu5O/uRyJR8eHc5XM2m', '2025-12-04', 1, '/public/res/user_profiles/user-114-1766159663-VeterinarioHerradura.png'),
+(115, 116, 'Administrador', '$2y$10$FiWOwAfA2okMDvOoYeUHo.z6yLPYzcPRa9VGM1S/X4Jjq1xoCB07W', '2025-12-04', 1, '/public/res/user_profiles/user-115-1766159637-Admin.png'),
+(116, 117, 'Ayudante', '$2y$10$zNxV1KgU0ynSdAr5KPE3DO9xvXQgu/G7aDdPlxKSG75p6JG.W64VK', '2025-12-04', 1, NULL),
+(117, 118, 'Publicista', '$2y$10$DmLFFWF/2mIxlEH.HXMbouxT.IHlYS8lgBbo9bu68IcdqaXtXU7IK', '2025-12-04', 1, '/public/res/user_profiles/user-117-1766159706-ElDepartamental.png');
 
 -- --------------------------------------------------------
 
@@ -418,7 +382,7 @@ ALTER TABLE `vacunas_mascota`
 -- AUTO_INCREMENT de la tabla `adopciones`
 --
 ALTER TABLE `adopciones`
-  MODIFY `idAdopciones` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idAdopciones` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `donaciones`
@@ -430,19 +394,19 @@ ALTER TABLE `donaciones`
 -- AUTO_INCREMENT de la tabla `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `idEventos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idEventos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `log_acciones`
 --
 ALTER TABLE `log_acciones`
-  MODIFY `idLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `idLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT de la tabla `mascota`
 --
 ALTER TABLE `mascota`
-  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `idMascota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT de la tabla `noticias`
@@ -454,13 +418,13 @@ ALTER TABLE `noticias`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `idPersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `idPersona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
 -- AUTO_INCREMENT de la tabla `vacunas`

@@ -192,7 +192,8 @@ if (!isset($_SESSION['user']) || $_SESSION['rol'] !== 'Administrador') {
               // Opcional: obtener nombre de usuario
               $nombre_usuario = 'Usuario #' . $usuario_id;
               if ($usuario_id) {
-                $qUser = $conexion->query("SELECT nombre FROM usuario WHERE idUsuario = $usuario_id LIMIT 1");
+                $qUser = $conexion->query("SELECT nombre FROM persona JOIN usuario WHERE idUsuario = $usuario_id LIMIT 1");
+
                 if ($qUser && $qUser->num_rows > 0) {
                   $nombre_usuario = htmlspecialchars($qUser->fetch_assoc()['nombre'], ENT_QUOTES, 'UTF-8');
                 }

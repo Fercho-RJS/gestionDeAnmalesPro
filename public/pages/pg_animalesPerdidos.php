@@ -77,8 +77,11 @@ $_SESSION['pgActual'] = "animalesPerdidos";
           <?php while ($mascota = $resultado->fetch_assoc()): ?>
             <?php
             $imagenBD = $mascota['imagen'] ?? '';
-            $nombreArchivo = basename($imagenBD); // extrae solo el nombre
-            $imagen = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . htmlspecialchars($nombreArchivo, ENT_QUOTES, 'UTF-8');
+            if (!empty($imagenBD)) {
+              $imagen = htmlspecialchars($imagenBD, ENT_QUOTES, 'UTF-8');
+            } else {
+              $imagen = PUBLIC_RESOURCES_IMAGES_URL . "animal.png";
+            }
 
 
 

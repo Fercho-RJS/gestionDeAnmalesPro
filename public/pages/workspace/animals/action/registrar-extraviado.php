@@ -28,17 +28,24 @@ $rutaBD = PUBLIC_RESOURCES_IMAGES_URL . "animal.png";
 
 // Si se sube una imagen personalizada
 if ($imagenFile && $imagenFile['error'] === UPLOAD_ERR_OK) {
-  $directorio = $_SERVER['DOCUMENT_ROOT'] . PUBLIC_RESOURCES_ANIMAL_PROFILES;
+  // Si la constante ya es ruta física relativa a htdocs:
+  $directorio = $_SERVER['DOCUMENT_ROOT'] . '/public/res/animal_profiles/';
+
+  // Crear carpeta si no existe
   if (!is_dir($directorio)) {
     mkdir($directorio, 0777, true);
   }
+
   $nombreArchivo = 'lost-' . time() . '-' . basename($imagenFile['name']);
   $rutaCompleta = $directorio . $nombreArchivo;
 
   if (move_uploaded_file($imagenFile['tmp_name'], $rutaCompleta)) {
+    // Para guardar en BD usás la URL pública
     $rutaBD = PUBLIC_RESOURCES_ANIMAL_PROFILES_URL . $nombreArchivo;
   }
 }
+
+
 
 // Insertar mascota
 $sqlMascota = "INSERT INTO mascota (nombre, categoria, raza, edad, color, height, imagen, status) 
@@ -66,4 +73,3 @@ if ($stmtMascota->execute()) {
 }
 
 $conexion->close();
-?>

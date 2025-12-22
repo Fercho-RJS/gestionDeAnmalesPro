@@ -68,7 +68,7 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
 
         <!-- Reportes -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle <?php echo in_array($pg_actual, ['reportes', 'perdidos']) ? 'active' : ''; ?>"
+          <a class="nav-link dropdown-toggle disabled <?php echo in_array($pg_actual, ['reportes', 'perdidos']) ? 'active' : ''; ?>"
             href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="bi bi-clipboard-data fs-3"></i>
           </a>
@@ -80,7 +80,7 @@ $pg_actual = $_SESSION['pgActual'] ?? '';
 
         <!-- Configuración -->
         <li class="nav-item">
-          <a class="nav-link <?php echo $pg_actual === 'configuracion' ? 'active' : ''; ?>"
+          <a class="nav-link disabled <?php echo $pg_actual === 'configuracion' ? 'active' : ''; ?>"
             href="<?php echo PUBLIC_PAGES_URL; ?>workspace/admin/pg_configuracion.php">
             <i class="bi bi-gear-fill fs-3"></i>
           </a>

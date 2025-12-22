@@ -23,10 +23,10 @@
 
     <!-- Misión -->
     <div class="row mb-5">
-      <div class="col-md-6">
-        <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>refugio.jpg" alt="Refugio digital" class="img-fluid rounded shadow-sm">
+      <div class="col-md-3">
+        <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>sobrenosotros1.webp" alt="Refugio digital" class="" height="200">
       </div>
-      <div class="col-md-6 d-flex flex-column justify-content-center">
+      <div class="col-md-9 d-flex flex-column justify-content-center">
         <h3 class="fw-bold">Nuestra Misión</h3>
         <p class="text-muted">
           Somos un espacio digital creado para unir a las personas con sus mascotas.
@@ -47,8 +47,8 @@
           <li><i class="bi bi-hospital"></i> Directorio de veterinarios y servicios de salud animal.</li>
         </ul>
       </div>
-      <div class="col-md-6">
-        <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>animales.jpg" alt="Animales felices" class="img-fluid rounded shadow-sm">
+      <div class="col-md-3">
+        <img src="<?php echo PUBLIC_RESOURCES_IMAGES_URL; ?>sobrenosotros2.webp" alt="Animales felices" class="" height="250">
       </div>
     </div>
 

@@ -26,7 +26,7 @@
 
     <!-- Reportes (dropup) -->
     <div class="dropup text-center flex-fill">
-      <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+      <a class="nav-link dropdown-toggle text-white disabled" href="#" role="button" data-bs-toggle="dropdown">
         <i class="bi bi-clipboard-data fs-4"></i><br>
         <small>Reportes</small>
       </a>
